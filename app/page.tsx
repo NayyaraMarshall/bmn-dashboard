@@ -13,7 +13,7 @@ export default function LoginPage() {
         <img src="/logopu.png" alt="Logo Perusahaan" width="50" className="mx-auto mb-4" />
 
         {/* Header  */}
-        <h1 className="text-[20px] font-bold text-center mb-6 text-gray-800">BMN Monitoring Dashboard <br />
+        <h1 className="text-[20px] font-bold text-center mb-6 text-gray-800">Dashboard Monitoring <br /> Barang Milik Negara (BMN)<br />
         <span className="text-gray-500 text-base font-normal">Pusat Data dan Teknologi Informasi</span>
         </h1>
 
@@ -31,7 +31,7 @@ export default function LoginPage() {
         
         {/* Admin */}
           <button
-            onClick={() => router.push('/admin/login')}
+            onClick={() => router.push('/admin-login')}
             className="w-full font-semibold bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 cursor-pointer mt-4">Login sebagai Admin
           </button>
       </div>

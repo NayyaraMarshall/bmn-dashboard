@@ -1,9 +1,8 @@
-// app/layout.tsx
 import './globals.css';
 import { ReactNode } from 'react';
 
 export const metadata = {
-  title: 'BMN Dashboard',
+  title: 'Dashboard Monitoring Barang Milik Negara (BMN)',
   description: 'Aplikasi Monitoring BMN',
 };
 

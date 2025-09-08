@@ -26,7 +26,7 @@ export default function AdminLoginPage() {
 
         {/* Header */}
          <h1 className="text-[20px] font-bold text-center mb-6 text-gray-800">Login Admin<br />
-        <span className="text-gray-500 text-base font-normal">BMN Monitoring Dashboard</span>
+        <span className="text-gray-500 text-base font-normal">Dashboard Monitoring Barang Milik Negara (BMN)</span>
         </h1>
 
         {/* Form */}
