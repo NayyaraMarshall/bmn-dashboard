@@ -52,8 +52,7 @@ tailwind.config.ts
 *.tailwind.css
 
 # shadcn/ui config
-components.json
-
+components.json     
 # Editor settings
 .vscode/*
 !.vscode/settings.json

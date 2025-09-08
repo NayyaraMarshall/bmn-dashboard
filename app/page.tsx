@@ -32,7 +32,7 @@ export default function LoginPage() {
         {/* Admin */}
           <button
             onClick={() => router.push('/admin-login')}
-            className="w-full font-semibold bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 cursor-pointer mt-4">Login sebagai Admin
+            className="w-full font-semibold bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 cursor-pointer mt-4">Login sebagai Admin
           </button>
       </div>
     </div>

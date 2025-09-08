@@ -1,5 +1,5 @@
 export default function AdminDashboard() {
   return (
-    <div className="text-center text-2xl font-bold text-blue-600">Admin Dashboard</div>
+    <div className="text-center text-2xl font-bold text-blue-600">admin dashboard</div>
   );
 }

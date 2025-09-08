@@ -47,7 +47,7 @@ export default function AdminLoginPage() {
           />
           <button
             type="submit"
-            className="w-full font-semibold bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 cursor-pointer">Login
+            className="w-full font-semibold bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 cursor-pointer">Login
           </button>
         </form>
       </div>
