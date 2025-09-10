@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { RxDashboard } from "react-icons/rx";
 
 export default function Sidebar({ role }: { role: "admin" | "user" }) {
   const bgColor = role === "admin" ? "bg-red-600" : "bg-blue-600";
@@ -10,9 +11,17 @@ export default function Sidebar({ role }: { role: "admin" | "user" }) {
         <div className="p-6 text-xl font-bold">Dashboard BMN</div>
         <nav className="px-4">
           <ul className="space-y-2">
-            <li><Link href={`/${role}/dashboard`} className={`block py-2 px-3 rounded ${hoverColor}`}>Dashboard</Link></li>
-            <li><Link href={`/${role}/bmn`} className={`block py-2 px-3 rounded ${hoverColor}`}>Data BMN</Link></li>
-            {role === "admin" && <li><Link href="/admin/peminjaman" className={`block py-2 px-3 rounded ${hoverColor}`}>Data Peminjaman</Link></li>}
+            <li>
+              <Link href={`/${role}/dashboard`} className={`flex items-center gap-3 block py-2 px-3 rounded ${hoverColor}`}>
+              <RxDashboard />Dashboard</Link>
+              
+              </li>
+            <li>
+              <Link href={`/${role}/bmn`} className={`block py-2 px-3 rounded ${hoverColor}`}>Data BMN</Link>
+              </li>
+            {role === "admin" && 
+            <li><Link href="/admin/peminjaman" className={`block py-2 px-3 rounded ${hoverColor}`}>Data Peminjaman</Link>
+              </li>}
           </ul>
         </nav>
       </div>
