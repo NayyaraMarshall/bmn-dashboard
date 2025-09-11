@@ -2,7 +2,7 @@ import './globals.css';
 import { ReactNode } from 'react';
 
 export const metadata = {
-  title: 'Dashboard Monitoring Barang Milik Negara (BMN)',
+  title: 'DASHBOARD MONITORING BARANG MILIK NEGARA (BMN)',
   description: 'Aplikasi Monitoring BMN',
 };
 

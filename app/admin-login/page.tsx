@@ -2,20 +2,25 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft } from 'lucide-react';
 
 export default function AdminLoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false); // ⬅️ state loading
   const router = useRouter();
 
   const handleAdminLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (username === 'admin' && password === '1234') {
-      router.push('/admin/dashboard');
-    } else {
-      alert('Username atau password salah!');
-    }
+    setLoading(true);
+
+    setTimeout(() => {
+      if (username === 'admin' && password === '1234') {
+        router.push('/admin/dashboard');
+      } else {
+        alert('Username atau password salah!');
+        setLoading(false);
+      }
+    }, 1200); // delay biar kelihatan spinnernya
   };
 
   return (
@@ -25,8 +30,11 @@ export default function AdminLoginPage() {
         <img src="/logopu.png" alt="Logo Perusahaan" width="50" className="mx-auto mb-4" />
 
         {/* Header */}
-         <h1 className="text-[20px] font-bold text-center mb-6 text-gray-800">Login Admin<br />
-        <span className="text-gray-500 text-base font-normal">Dashboard Monitoring Barang Milik Negara (BMN)</span>
+        <h1 className="text-[20px] font-bold text-center mb-6 text-gray-800">
+          Login Admin<br />
+          <span className="text-gray-500 text-base font-normal">
+            Dashboard Monitoring Barang Milik Negara (BMN)
+          </span>
         </h1>
 
         {/* Form */}
@@ -47,7 +55,36 @@ export default function AdminLoginPage() {
           />
           <button
             type="submit"
-            className="w-full font-semibold bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 cursor-pointer">Login
+            disabled={loading}
+            className="w-full flex items-center justify-center font-semibold bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 cursor-pointer disabled:opacity-70"
+          >
+            {loading ? (
+              <>
+                <svg
+                  className="animate-spin mr-2 h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                  ></path>
+                </svg>
+                <span className="text-white">Loading</span>
+              </>
+            ) : (
+              'Login'
+            )}
           </button>
         </form>
       </div>

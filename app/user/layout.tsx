@@ -1,15 +1,21 @@
-'use client';
+"use client";
 
-import Sidebar from '@/components/Sidebar';
-import Header from '@/components/Header';
+import Sidebar from "@/components/Sidebar";
+import Header from "@/components/Header";
 
 export default function UserLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex min-h-screen bg-white">
+      {/* Sidebar */}
       <Sidebar role="user" />
+
+      {/* Konten */}
       <div className="flex-1 flex flex-col">
-        <Header title="BMN Monitoring" role="user" /> 
-        <main className="p-6">{children}</main>
+        <Header
+          role="user"
+          title="DASHBOARD MONITORING BARANG MILIK NEGARA (BMN)"
+        />
+        <main className="flex-1 p-6">{children}</main>
       </div>
     </div>
   );
