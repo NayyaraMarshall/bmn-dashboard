@@ -25,7 +25,7 @@ export default function LoginPage() {
           Dashboard Monitoring <br /> Barang Milik Negara (BMN)
           <br />
           <span className="text-gray-500 text-base font-normal">
-            Pusat Data dan Teknologi Informasi
+            Pusat Data dan Teknologi Informasi <br /> Kementerian Pekerjaan Umum
           </span>
         </h1>
 
