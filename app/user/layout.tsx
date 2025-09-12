@@ -5,7 +5,7 @@ import Header from "@/components/Header";
 
 export default function UserLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex min-h-screen bg-white">
+    <div className="flex min-h-screen bg-gray-100 font-inter">
       {/* Sidebar */}
       <Sidebar role="user" />
 

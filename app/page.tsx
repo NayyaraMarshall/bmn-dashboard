@@ -18,7 +18,12 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-blue-100">
       <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
         {/* Logo */}
-        <img src="/logopu.png" alt="Logo Perusahaan" width="50" className="mx-auto mb-4" />
+        <img
+          src="/logopu.png"
+          alt="Logo Perusahaan"
+          width="50"
+          className="mx-auto mb-4"
+        />
 
         {/* Header  */}
         <h1 className="text-[20px] font-bold text-center mb-6 text-gray-800">
@@ -36,7 +41,7 @@ export default function LoginPage() {
           className={`w-full font-semibold py-2 rounded-lg mb-4 flex justify-center items-center ${
             loading
               ? 'bg-blue-400 cursor-not-allowed'
-              : 'bg-blue-500 hover:bg-blue-600 text-white'
+              : 'bg-blue-600 hover:bg-blue-700 text-white'
           }`}
         >
           {loading ? (
@@ -77,7 +82,7 @@ export default function LoginPage() {
         {/* Admin */}
         <button
           onClick={() => router.push('/admin-login')}
-          className="w-full font-semibold bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 cursor-pointer mt-4"
+          className="w-full font-semibold bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 cursor-pointer mt-4"
         >
           Login sebagai Admin
         </button>
