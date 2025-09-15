@@ -2,7 +2,9 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { ReactNode } from "react";
 
+// Data dummy
 const kategoriData = [
   { name: "Laptop", total: 20 },
   { name: "TV", total: 10 },
@@ -26,8 +28,12 @@ const peminjamanBMN = [
   { id: 5, nama: "TV Samsung", peminjam: "Eka", tgl: "2025-07-28" },
 ];
 
-// 🔑 bikin wrapper biar semua card lebih kecil serentak
-const SmallCard = ({ children, className = "" }) => (
+type SmallCardProps = {
+  children: ReactNode;
+  className?: string;
+};
+
+const SmallCard = ({ children, className = "" }: SmallCardProps) => (
   <Card className={`p-1 text-xs ${className}`}>{children}</Card>
 );
 
@@ -76,7 +82,7 @@ export default function DashboardPage() {
         <CardHeader className="p-2">
           <CardTitle className="text-xs">Visualisasi Kategori Barang</CardTitle>
         </CardHeader>
-        <CardContent className="h-62"> {/* kecilin chart serentak */}
+        <CardContent className="h-62">
           <ResponsiveContainer width="90%" height="100%">
             <BarChart data={kategoriData}>
               <XAxis dataKey="name" />
@@ -117,7 +123,7 @@ export default function DashboardPage() {
 
         {/* Peminjaman BMN */}
         <SmallCard className="h-42 overflow-y-auto">
-          <CardHeader className="p-2">
+          <CardHeader className="pl-2 pt-2 pr-2 pb-0">
             <CardTitle className="text-xs">Peminjaman BMN Terbaru</CardTitle>
           </CardHeader>
           <CardContent className="pl-2 pt-0 pr-2 pb-2">
