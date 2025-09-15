@@ -13,7 +13,7 @@ export default function UserLayout({ children }: { children: React.ReactNode }) 
       <div className="flex-1 flex flex-col">
         <Header
           role="user"
-          title="DASHBOARD MONITORING BARANG MILIK NEGARA (BMN)"
+          title="Dashboard Monitoring Barang Milik Negara (BMN)"
         />
         <main className="flex-1 p-6">{children}</main>
       </div>
