@@ -11,26 +11,26 @@ export default function LoginPage() {
     setLoading(true);
     setTimeout(() => {
       router.push('/user/dashboard');
-    }, 1500); // biar spinner keliatan sebentar
+    }, 1500);
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-blue-100">
-      <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
+      <div className="bg-white p-6 rounded-xl shadow-md w-full max-w-sm">
         {/* Logo */}
         <img
           src="/logopu.png"
           alt="Logo Perusahaan"
-          width="50"
-          className="mx-auto mb-4"
+          width="40"
+          className="mx-auto mb-3"
         />
 
-        {/* Header  */}
-        <h1 className="text-[20px] font-bold text-center mb-6 text-gray-800">
+        {/* Header */}
+        <h1 className="text-base font-bold text-center mb-4 text-gray-800 leading-tight">
           Dashboard Monitoring <br /> Barang Milik Negara (BMN)
           <br />
-          <span className="text-gray-500 text-base font-normal">
-            Pusat Data dan Teknologi Informasi <br /> Kementerian Pekerjaan Umum
+          <span className="text-gray-500 text-xs font-normal">
+            Pusat Data & Teknologi Informasi <br /> Kementerian Pekerjaan Umum
           </span>
         </h1>
 
@@ -38,7 +38,7 @@ export default function LoginPage() {
         <button
           onClick={handleUserClick}
           disabled={loading}
-          className={`w-full font-semibold py-2 rounded-lg mb-4 flex justify-center items-center ${
+          className={`w-full text-xs font-medium py-1.5 rounded-lg mb-3 flex justify-center items-center ${
             loading
               ? 'bg-blue-400 cursor-not-allowed'
               : 'bg-blue-600 hover:bg-blue-700 text-white'
@@ -47,7 +47,7 @@ export default function LoginPage() {
           {loading ? (
             <>
               <svg
-                className="animate-spin mr-2 h-5 w-5 text-white"
+                className="animate-spin mr-2 h-4 w-4 text-white"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -66,23 +66,23 @@ export default function LoginPage() {
                   d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
                 ></path>
               </svg>
-              <span className="text-white">Loading</span>
+              <span className="text-white text-xs">Loading</span>
             </>
           ) : (
             'Lanjut sebagai Pengguna'
           )}
         </button>
 
-        <div className="flex items-center">
+        <div className="flex items-center my-2">
           <div className="flex-grow border-t border-gray-300"></div>
-          <span className="mx-4 text-gray-600">atau</span>
+          <span className="mx-3 text-gray-500 text-xs">atau</span>
           <div className="flex-grow border-t border-gray-300"></div>
         </div>
 
         {/* Admin */}
         <button
           onClick={() => router.push('/admin-login')}
-          className="w-full font-semibold bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 cursor-pointer mt-4"
+          className="w-full text-xs font-medium bg-purple-600 text-white py-1.5 rounded-lg hover:bg-purple-700 mt-2"
         >
           Login sebagai Admin
         </button>

@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 export default function AdminLoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false); // ⬅️ state loading
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleAdminLogin = (e: React.FormEvent) => {
@@ -20,48 +20,53 @@ export default function AdminLoginPage() {
         alert('Username atau password salah!');
         setLoading(false);
       }
-    }, 1200); // delay biar kelihatan spinnernya
+    }, 1200);
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-blue-100">
-      <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
+      <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-sm">
         {/* Logo */}
-        <img src="/logopu.png" alt="Logo Perusahaan" width="50" className="mx-auto mb-4" />
+        <img
+          src="/logopu.png"
+          alt="Logo Perusahaan"
+          width="40"
+          className="mx-auto mb-3"
+        />
 
         {/* Header */}
-        <h1 className="text-[20px] font-bold text-center mb-6 text-gray-800">
-          Login Admin<br />
-          <span className="text-gray-500 text-base font-normal">
-            Dashboard Monitoring Barang Milik Negara (BMN)
+        <h1 className="text-[16px] font-bold text-center mb-4 text-gray-800 leading-snug">
+          Login Admin <br />
+          <span className="text-gray-500 text-[12px] font-normal">
+            Dashboard Monitoring BMN
           </span>
         </h1>
 
         {/* Form */}
-        <form onSubmit={handleAdminLogin}>
+        <form onSubmit={handleAdminLogin} className="space-y-3">
           <input
             type="text"
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="w-full border border-gray-300 rounded-lg p-2 mb-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full border border-gray-300 rounded-md p-2 text-xs focus:outline-none focus:ring-1 focus:ring-blue-400"
           />
           <input
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full border border-gray-300 rounded-lg p-2 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full border border-gray-300 rounded-md p-2 text-xs focus:outline-none focus:ring-1 focus:ring-blue-400"
           />
           <button
             type="submit"
             disabled={loading}
-            className="w-full flex items-center justify-center font-semibold bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 cursor-pointer disabled:opacity-70"
+            className="w-full flex items-center justify-center font-medium bg-red-500 text-white text-xs py-2 rounded-md hover:bg-red-600 cursor-pointer disabled:opacity-70"
           >
             {loading ? (
               <>
                 <svg
-                  className="animate-spin mr-2 h-5 w-5 text-white"
+                  className="animate-spin mr-2 h-4 w-4 text-white"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -80,7 +85,7 @@ export default function AdminLoginPage() {
                     d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
                   ></path>
                 </svg>
-                <span className="text-white">Loading</span>
+                <span className="text-white text-xs">Loading</span>
               </>
             ) : (
               'Login'
