@@ -37,13 +37,14 @@ const SmallCard = ({ children, className = "" }: SmallCardProps) => (
 
 export default function Dashboard() {
   return (
-    <div className="p-1 grid grid-cols-1 lg:grid-cols-4 gap-3 text-xs">
+    <div className="grid grid-cols-5 gap-3 p-1">
       {/* Statistik Cards */}
       {[
         { title: "Total Unit BMN", value: "70" },
         { title: "Laptop", value: "20" },
         { title: "TV", value: "10" },
         { title: "Monitor", value: "15" },
+        { title: "CPU", value: "25" },
       ].map((stat, i) => (
         <SmallCard key={i} className="col-span-1">
           <CardHeader className="p-2 pb-0">
@@ -54,6 +55,7 @@ export default function Dashboard() {
           </CardContent>
         </SmallCard>
       ))}
+
 
       {/* Chart */}
       <SmallCard className="col-span-2">
@@ -73,7 +75,7 @@ export default function Dashboard() {
       </SmallCard>
 
       {/* Perolehan + Peminjaman */}
-      <div className="col-span-2 grid grid-rows-2 gap-2">
+      <div className="col-start-3 col-span-3 grid grid-rows-2 gap-3 w-full">
         {/* Perolehan BMN */}
         <SmallCard>
           <CardHeader className="px-3 pt-2 pb-0">

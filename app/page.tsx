@@ -82,7 +82,7 @@ export default function LoginPage() {
         {/* Admin */}
         <button
           onClick={() => router.push('/admin-login')}
-          className="w-full text-xs font-medium bg-purple-600 text-white py-1.5 rounded-lg hover:bg-purple-700 mt-2"
+          className="w-full text-xs font-medium bg-purple-500 text-white py-1.5 rounded-lg hover:bg-purple-600 mt-2"
         >
           Login sebagai Admin
         </button>
