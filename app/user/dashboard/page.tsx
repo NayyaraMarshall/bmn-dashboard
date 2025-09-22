@@ -17,7 +17,6 @@ const ketersediaanData = [
   { name: "Dipinjam", total: 40, fill: "var(--chart-2)" },
 ];
 
-// Hitung total BMN dari kategoriData
 const totalBMN = kategoriData.reduce((sum, item) => sum + item.total, 0);
 
 type SmallCardProps = {

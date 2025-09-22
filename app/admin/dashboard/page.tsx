@@ -1,33 +1,10 @@
 "use client";
 
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-} from "@/components/ui/card";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-  LabelList,
-} from "recharts";
-
+import {Card, CardHeader,CardTitle,CardContent,} from "@/components/ui/card";
+import {ChartContainer,ChartTooltip,ChartTooltipContent,ChartConfig,} from "@/components/ui/chart";
+import {BarChart,Bar,XAxis,YAxis,Tooltip,ResponsiveContainer,PieChart,Pie,LabelList,} from "recharts";
 import { ReactNode } from "react";
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
 
-
-// ----- Data Dummy -----
 const kategoriData = [
   { name: "Laptop", total: 20 },
   { name: "TV", total: 10 },
@@ -57,6 +34,8 @@ const kondisiData: Record<
   ],
 };
 
+const totalBMN = kategoriData.reduce((sum, item) => sum + item.total, 0);
+
 const perolehanBMN = [
   { id: 1, nama: "Laptop Dell", tgl: "2025-08-01" },
   { id: 2, nama: "TV Samsung", tgl: "2025-07-25" },
@@ -71,7 +50,6 @@ const peminjamanBMN = [
   { id: 4, nama: "Laptop HP", peminjam: "Dewi", tgl: "2025-07-29" },
 ];
 
-// ----- SmallCard -----
 type SmallCardProps = {
   children: ReactNode;
   className?: string;
@@ -84,137 +62,144 @@ const SmallCard = ({ children, className = "" }: SmallCardProps) => (
 export default function Dashboard() {
   return (
     <div className="grid grid-cols-5 gap-2 p-0">
-      {/* Card Total BMN */}
-      <SmallCard className="col-span-1 flex flex-col items-start justify-start">
+      {/* ====== Bagian Atas: Total + Kategori ====== */}
+      <SmallCard className="col-span-1 h-[140px] flex flex-col">
         <CardHeader className="p-2 pb-0">
-          <CardTitle className="text-xs whitespace-nowrap">Total Unit BMN</CardTitle>
+          <CardTitle className="text-[10px]">Total Unit BMN</CardTitle>
         </CardHeader>
-        <CardContent className="p-2">
-          <span className="text-lg font-bold">70</span>
+        <CardContent className="flex-1 flex items-end justify-end p-2">
+          <span className="text-xl font-bold">{totalBMN}</span>
         </CardContent>
       </SmallCard>
-      
-      {/* Card per kategori + pie chart kondisi */}
-      {kategoriData.map((stat, i) => (
-  <SmallCard key={i} className="col-span-1">
-    <CardHeader className="flex justify-between items-center p-2 pb-0">
-      <CardTitle className="text-[10px]">{stat.name}</CardTitle>
-      <span className="text-xs font-bold">{stat.total}</span>
-    </CardHeader>
-    <CardContent className="p-2 pt-1 h-[80px]">
-      <ChartContainer
-        config={{
-          Baik: { label: "Baik", color: "var(--chart-1)" },
-          Rusak: { label: "Rusak", color: "var(--chart-2)" },
-        }}
-        className="[&_.recharts-text]:fill-background mx-auto aspect-square"
-      >
-        <PieChart>
-          <ChartTooltip
-            content={<ChartTooltipContent nameKey="name" hideLabel />}
-          />
-          <Pie
-            data={kondisiData[stat.name]}
-            dataKey="value"
-            nameKey="name"
-            outerRadius={30}
-            stroke="none"
-          >
-            <LabelList
-              dataKey="name"
-              className="fill-background"
-              stroke="none"
-              fontSize={8}
-              formatter={(value: string) =>
-                value === "Baik"
-                  ? "👍 Baik"
-                  : value === "Rusak"
-                  ? "⚠️ Rusak"
-                  : value
-              }
+
+      {kategoriData.map((stat, i) => {
+  const chartConfig = {
+    Baik: { label: "Baik", color: "var(--chart-1)" },
+    Rusak: { label: "Rusak", color: "var(--chart-2)" },
+  } satisfies ChartConfig;
+
+  return (
+    <SmallCard
+      key={i}
+      className="col-span-1 h-[140px] flex flex-col"
+    >
+      <CardHeader className="flex justify-between items-center p-2 pb-0">
+        <CardTitle className="text-[10px]">{stat.name}</CardTitle>
+        <span className="text-xs font-bold">{stat.total}</span>
+      </CardHeader>
+      <CardContent className="flex-1 flex items-center justify-center">
+        <ChartContainer
+          config={chartConfig}
+          className="[&_.recharts-text]:fill-background aspect-square w-[80px] h-[80px]"
+        >
+          <PieChart width={90} height={90}>
+            <ChartTooltip
+              content={<ChartTooltipContent nameKey="value" hideLabel />}
             />
-          </Pie>
-        </PieChart>
-      </ChartContainer>
-    </CardContent>
-  </SmallCard>
-))}
+            <Pie
+              data={kondisiData[stat.name]}
+              dataKey="value"
+              nameKey="name"
+              outerRadius={28}
+              stroke="none"
+            >
+              <LabelList
+                dataKey="name"
+                className="fill-background"
+                stroke="none"
+                fontSize={7}
+                formatter={(value: keyof typeof chartConfig) =>
+                  chartConfig[value]?.label
+                }
+              />
+            </Pie>
+          </PieChart>
+        </ChartContainer>
+      </CardContent>
+    </SmallCard>
+  );
+})}
 
-      {/* Chart Bar */}
-      <SmallCard className="col-start-1 col-span-3">
-        <CardHeader className="p-2 pb-0">
-          <CardTitle className="text-[10px]">
-            Visualisasi Kategori Barang
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="h-62 pb-0 text-[9px]">
-          <ResponsiveContainer width="90%" height="90%">
-            <BarChart data={kategoriData}>
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Bar dataKey="total" fill="#8884d8" radius={[2, 2, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </CardContent>
-      </SmallCard>
-
-      {/* Perolehan + Peminjaman */}
-      <div className="col-start-4 col-span-2 grid grid-rows-1 gap-3 w-full">
-        {/* Perolehan BMN */}
-        <SmallCard>
-          <CardHeader className="px-3 pt-2 pb-0">
-            <CardTitle className="text-[10px]">Perolehan BMN Terbaru</CardTitle>
+      {/* ====== Bagian Tengah: Bar Chart + Table ====== */}
+      <div className="col-span-5 grid grid-cols-5 gap-2 items-start">
+        <SmallCard className="col-span-2 h-full">
+          <CardHeader className="p-2 pb-0">
+            <CardTitle className="text-[10px]">
+              Visualisasi Kategori Barang
+            </CardTitle>
           </CardHeader>
-          <CardContent className="px-3 pt-1 pb-3">
-            <table className="w-full border border-gray-200 border-collapse text-[7px]">
-              <thead className="bg-gray-100">
-                <tr>
-                  <th className="text-left py-1 px-2 border">Nama Barang</th>
-                  <th className="text-left py-1 px-2 border">Tanggal</th>
-                </tr>
-              </thead>
-              <tbody>
-                {perolehanBMN.map((item) => (
-                  <tr
-                    key={item.id}
-                    className="hover:bg-gray-50 even:bg-gray-50/50"
-                  >
-                    <td className="py-1 px-2 border">{item.nama}</td>
-                    <td className="py-1 px-2 border">{item.tgl}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <CardContent className="h-[250px] p-2 pb-0 text-[9px]">
+            <ResponsiveContainer width="90%" height="100%">
+              <BarChart data={kategoriData}>
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="total" fill="#8884d8" radius={[2, 2, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
           </CardContent>
         </SmallCard>
 
-        {/* Peminjaman BMN */}
-        <SmallCard>
-          <CardHeader className="px-3 pt-2 pb-0">
-            <CardTitle className="text-[10px]">Peminjaman BMN Terbaru</CardTitle>
-          </CardHeader>
-          <CardContent className="px-3 pt-1 pb-3">
-            <table className="w-full border-collapse text-[7px]">
-              <thead>
-                <tr className="bg-gray-100">
-                  <th className="text-left py-1 px-2 border">Nama Barang</th>
-                  <th className="text-left py-1 px-2 border">Peminjam</th>
-                  <th className="text-left py-1 px-2 border">Tanggal</th>
-                </tr>
-              </thead>
-              <tbody>
-                {peminjamanBMN.map((item) => (
-                  <tr key={item.id} className="hover:bg-gray-50">
-                    <td className="py-1 px-2 border">{item.nama}</td>
-                    <td className="py-1 px-2 border">{item.peminjam}</td>
-                    <td className="py-1 px-2 border">{item.tgl}</td>
+        <div className="col-span-3 flex flex-col gap-2">
+          {/* Perolehan BMN */}
+          <SmallCard>
+            <CardHeader className="px-3 pt-2 pb-0">
+              <CardTitle className="text-[10px]">
+                Perolehan BMN Terbaru
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="px-3 pt-0 pb-2">
+              <table className="w-full border border-gray-200 border-collapse text-[7px]">
+                <thead className="bg-gray-100">
+                  <tr>
+                    <th className="text-left py-1 px-2 border">Nama Barang</th>
+                    <th className="text-left py-1 px-2 border">Tanggal</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </CardContent>
-        </SmallCard>
+                </thead>
+                <tbody>
+                  {perolehanBMN.map((item) => (
+                    <tr
+                      key={item.id}
+                      className="hover:bg-gray-50 even:bg-gray-50/50"
+                    >
+                      <td className="py-1 px-2 border">{item.nama}</td>
+                      <td className="py-1 px-2 border">{item.tgl}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </CardContent>
+          </SmallCard>
+
+          {/* Peminjaman BMN */}
+          <SmallCard>
+            <CardHeader className="px-3 pt-2 pb-0">
+              <CardTitle className="text-[10px]">
+                Peminjaman BMN Terbaru
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="px-3 pt-0 pb-2">
+              <table className="w-full border-collapse text-[7px]">
+                <thead>
+                  <tr className="bg-gray-100">
+                    <th className="text-left py-1 px-2 border">Nama Barang</th>
+                    <th className="text-left py-1 px-2 border">Peminjam</th>
+                    <th className="text-left py-1 px-2 border">Tanggal</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {peminjamanBMN.map((item) => (
+                    <tr key={item.id} className="hover:bg-gray-50">
+                      <td className="py-1 px-2 border">{item.nama}</td>
+                      <td className="py-1 px-2 border">{item.peminjam}</td>
+                      <td className="py-1 px-2 border">{item.tgl}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </CardContent>
+          </SmallCard>
+        </div>
       </div>
     </div>
   );
