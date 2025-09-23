@@ -9,7 +9,7 @@ const kategoriData = [
   { name: "Laptop", total: 20 },
   { name: "TV", total: 10 },
   { name: "Monitor", total: 15 },
-  { name: "CPU", total: 25 },
+  { name: "Printer", total: 25 },
 ];
 
 const ketersediaanData = [
