@@ -4,180 +4,9 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {Select, SelectContent, SelectItem, SelectTrigger,SelectValue} from "@/components/ui/select";
-import { MdOutlineDeleteOutline } from "react-icons/md";
-import { FiEdit } from "react-icons/fi";
+import { MdDeleteOutline, MdOutlineModeEdit  } from "react-icons/md";
 
-type BMN = {
-  id: number;
-  kode: string;
-  unit: number;
-  nama: string;
-  kategori: string;
-  jumlah: number;
-  tanggal: string;
-  kondisiBaik: number;
-  kondisiRusak: number;
-  dipinjam: number;
-};
-
-const dataBMN: BMN[] = [
-  {
-    id: 1,
-    kode: "3100102002",
-    unit: 33,
-    nama: "Lenovo IdeaPad 3 14/TL6",
-    kategori: "Laptop",
-    jumlah: 12,
-    tanggal: "26/08/2024",
-    kondisiBaik: 11,
-    kondisiRusak: 1,
-    dipinjam: 3,
-  },
-  {
-    id: 2,
-    kode: "3100102002",
-    unit: 37,
-    nama: "Lenovo Yoga Pro 9 14",
-    kategori: "Laptop",
-    jumlah: 10,
-    tanggal: "20/08/2024",
-    kondisiBaik: 7,
-    kondisiRusak: 3,
-    dipinjam: 4,
-  },
-  {
-    id: 3,
-    kode: "3100102002",
-    unit: 39,
-    nama: "Razer 14 2023",
-    kategori: "Laptop",
-    jumlah: 25,
-    tanggal: "26/08/2024",
-    kondisiBaik: 16,
-    kondisiRusak: 9,
-    dipinjam: 5,
-  },
-   {
-    id: 4,
-    kode: "3100106002",
-    unit: 28,
-    nama: "Dell UltraSharp 27\"",
-    kategori: "Monitor",
-    jumlah: 14,
-    tanggal: "12/09/2024",
-    kondisiBaik: 13,
-    kondisiRusak: 1,
-    dipinjam: 2,
-  },
-  {
-    id: 5,
-    kode: "3100102002",
-    unit: 42,
-    nama: "Asus Zenbook 15",
-    kategori: "Laptop",
-    jumlah: 18,
-    tanggal: "02/09/2024",
-    kondisiBaik: 18,
-    kondisiRusak: 0,
-    dipinjam: 6,
-  },
-  {
-    id: 6,
-    kode: "3100103002",
-    unit: 21,
-    nama: "Samsung Smart TV 55\"",
-    kategori: "TV",
-    jumlah: 10,
-    tanggal: "14/07/2024",
-    kondisiBaik: 9,
-    kondisiRusak: 1,
-    dipinjam: 3,
-  },
-  {
-    id: 7,
-    kode: "3100104002",
-    unit: 18,
-    nama: "Canon Pixma G2020",
-    kategori: "Printer",
-    jumlah: 12,
-    tanggal: "20/06/2024",
-    kondisiBaik: 10,
-    kondisiRusak: 2,
-    dipinjam: 4,
-  },
-  {
-    id: 8,
-    kode: "3100102002",
-    unit: 30,
-    nama: "Lenovo ThinkPad X1",
-    kategori: "Laptop",
-    jumlah: 20,
-    tanggal: "11/08/2024",
-    kondisiBaik: 17,
-    kondisiRusak: 3,
-    dipinjam: 5,
-  },
-  {
-    id: 9,
-    kode: "3100106002",
-    unit: 22,
-    nama: "LG UltraFine 24\"",
-    kategori: "Monitor",
-    jumlah: 9,
-    tanggal: "15/08/2024",
-    kondisiBaik: 8,
-    kondisiRusak: 1,
-    dipinjam: 2,
-  },
-  {
-    id: 10,
-    kode: "3100102002",
-    unit: 27,
-    nama: "MacBook Pro M2",
-    kategori: "Laptop",
-    jumlah: 14,
-    tanggal: "28/05/2024",
-    kondisiBaik: 14,
-    kondisiRusak: 0,
-    dipinjam: 4,
-  },
-  {
-    id: 11,
-    kode: "3100103002",
-    unit: 22,
-    nama: "LG OLED TV 65\"",
-    kategori: "TV",
-    jumlah: 8,
-    tanggal: "17/04/2024",
-    kondisiBaik: 7,
-    kondisiRusak: 1,
-    dipinjam: 3,
-  },
-  {
-    id: 12,
-    kode: "3100104002",
-    unit: 25,
-    nama: "HP LaserJet Pro M15",
-    kategori: "Printer",
-    jumlah: 9,
-    tanggal: "09/03/2024",
-    kondisiBaik: 8,
-    kondisiRusak: 1,
-    dipinjam: 2,
-  },
-  {
-    id: 13,
-    kode: "3100106002",
-    unit: 28,
-    nama: "Dell UltraSharp 27\"",
-    kategori: "Monitor",
-    jumlah: 14,
-    tanggal: "12/09/2024",
-    kondisiBaik: 13,
-    kondisiRusak: 1,
-    dipinjam: 2,
-  }
-];
+import { dataBMN, BMN } from "@/data/dataBMN";
 
 export default function DataBMNUserPage() {
   const [search, setSearch] = useState("");
@@ -205,7 +34,7 @@ export default function DataBMNUserPage() {
 
     {/* Filter */}
     <Select onValueChange={setKategori} defaultValue="all">
-      <SelectTrigger className="text-xs !h-[24px] w-[140px] px-2">
+      <SelectTrigger className="cursor-pointer text-xs !h-[24px] w-[140px] px-2">
         <SelectValue placeholder="Kategori" />
       </SelectTrigger>
       <SelectContent className="text-xs">
@@ -220,15 +49,15 @@ export default function DataBMNUserPage() {
     {/* Reset Button */}
     <Button
       variant="outline"
-      className="text-xs h-[24px] px-3"
+      className="cursor-pointer text-xs h-[24px] px-3"
       onClick={() => {
         setSearch("");
         setKategori("all");
       }}
     >Reset
     </Button>
-
   </div>
+
       {/* Table */}
       <div className="bg-white pb-0 rounded-lg shadow border overflow-x-auto">
         <div className="max-h-[400px] overflow-y-auto">
@@ -259,20 +88,20 @@ export default function DataBMNUserPage() {
                   <td className="border p-2">{item.kondisiBaik}</td>
                   <td className="border p-2">{item.kondisiRusak}</td>
                   <td className="border p-2">{item.kondisiBaik - item.dipinjam}</td>
-                  <td className="border p-2">
-                     <button
-                  onClick={() => onEdit(item)}
-                  className="p-2 rounded underline-offset-2 hover:text-green-600"
-                >
-                  <FiEdit />
-                </button>
-                {/* Delete */}
-                <button
-                  onClick={() => onDelete(item)}
-                  className="p-2 text-rounded hover:text-red-600"
-                >
-                  <MdOutlineDeleteOutline />
-                </button>
+                  <td className="border p-2 text-center">
+                    {/* tombol edit */}
+                    <button
+                      className="cursor-pointer rounded bg-gray-300 p-1 text-gray-500 hover:text-white hover:bg-blue-600"
+                    >
+                      <MdOutlineModeEdit className="text-lg" />
+                    </button>
+
+                    {/* tombol delete */}
+                    <button 
+                      className="cursor-pointer rounded bg-gray-300 p-1 text-gray-500 hover:text-white hover:bg-blue-600 mx-1"
+                    >
+                      <MdDeleteOutline className="text-lg" />
+                    </button>
                   </td>
                 </tr>
               ))}
