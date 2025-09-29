@@ -5,14 +5,14 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {Select, SelectContent, SelectItem, SelectTrigger,SelectValue} from "@/components/ui/select";
 
-import { dataBMN, BMN } from "@/data/dataBMN";
+import { dataBMN } from "@/data/dataBMN";
 
 export default function DataBMNUserPage() {
   const [search, setSearch] = useState("");
   const [kategori, setKategori] = useState("all");
 
   const filteredData = dataBMN.filter((item) => {
-    const matchSearch = item.nama.toLowerCase().includes(search.toLowerCase());
+    const matchSearch = item.namaBarang.toLowerCase().includes(search.toLowerCase());
     const matchKategori = kategori === "all" || item.kategori === kategori;
     return matchSearch && matchKategori;
   });
@@ -33,7 +33,7 @@ export default function DataBMNUserPage() {
 
     {/* Filter */}
     <Select onValueChange={setKategori} defaultValue="all">
-      <SelectTrigger className="text-xs !h-[24px] w-[140px] px-2">
+      <SelectTrigger className="cursor-pointer text-xs !h-[24px] w-[140px] px-2">
         <SelectValue placeholder="Kategori" />
       </SelectTrigger>
       <SelectContent className="text-xs">
@@ -48,7 +48,7 @@ export default function DataBMNUserPage() {
     {/* Reset Button */}
     <Button
       variant="outline"
-      className="text-xs h-[24px] px-3"
+      className="cursor-pointer text-xs h-[24px] px-3"
       onClick={() => {
         setSearch("");
         setKategori("all");
@@ -76,13 +76,13 @@ export default function DataBMNUserPage() {
             </thead>
             <tbody>
               {filteredData.map((item, index) => (
-                <tr key={item.id} className="hover:bg-gray-50">
+                <tr key={item.idBMN} className="hover:bg-gray-50">
                   <td className="border p-2">{index + 1}</td>
-                  <td className="border p-2">{item.kode}</td>
-                  <td className="border p-2">{item.nama}</td>
+                  <td className="border p-2">{item.ikmm}</td>
+                  <td className="border p-2">{item.namaBarang}</td>
                   <td className="border p-2">{item.kategori}</td>
-                  <td className="border p-2">{item.jumlah}</td>
-                  <td className="border p-2">{item.tanggal}</td>
+                  <td className="border p-2">{item.jumlahBarang}</td>
+                  <td className="border p-2">{item.tanggalPerolehan}</td>
                   <td className="border p-2">{item.kondisiBaik}</td>
                   <td className="border p-2">{item.kondisiRusak}</td>
                   <td className="border p-2">{item.kondisiBaik - item.dipinjam}</td>
