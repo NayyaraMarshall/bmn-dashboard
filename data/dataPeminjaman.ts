@@ -18,7 +18,7 @@ export const dataPeminjaman = [
   {
     idPeminjaman: 1,
     nomorPeminjaman: "70/BDI-TB/I/2024",
-    namaPeminjam: "Nayyara Aqila Marshall",
+    namaPeminjam: "Nayyara Marshall",
     statusPegawai: "Magang",
     nip: "112345678909876543",
     ikmm: 3100102002,
