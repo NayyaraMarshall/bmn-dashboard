@@ -35,7 +35,7 @@ export default function Sidebar({ role }: { role: "admin" | "user" }) {
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className={`text-[10px] mb-3 flex font-medium items-center gap-3 block py-2 px-3 rounded-[2vw] transition-colors ${
+                  className={`text-[10px] mb-2 flex font-medium items-center gap-3 block py-2 px-3 rounded transition-colors ${
                     pathname === item.href
                       ? activeColor
                       : "bg-gray-200 " + hoverColor

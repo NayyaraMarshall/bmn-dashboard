@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {Select, SelectContent, SelectItem, SelectTrigger,SelectValue} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 import { dataBMN } from "@/data/dataBMN";
 
@@ -11,7 +11,18 @@ export default function DataBMNUserPage() {
   const [search, setSearch] = useState("");
   const [kategori, setKategori] = useState("all");
 
-  const filteredData = dataBMN.filter((item) => {
+  // 🔹 Urutkan data dulu berdasarkan tanggalPerolehan terbaru
+  const sortedData = [...dataBMN].sort((a, b) => {
+    const [dayA, monthA, yearA] = a.tanggalPerolehan.split("/");
+    const [dayB, monthB, yearB] = b.tanggalPerolehan.split("/");
+
+    const dateA = new Date(`${yearA}-${monthA}-${dayA}`);
+    const dateB = new Date(`${yearB}-${monthB}-${dayB}`);
+
+    return dateB.getTime() - dateA.getTime(); 
+  });
+ 
+  const filteredData = sortedData.filter((item) => {
     const matchSearch = item.namaBarang.toLowerCase().includes(search.toLowerCase());
     const matchKategori = kategori === "all" || item.kategori === kategori;
     return matchSearch && matchKategori;
@@ -19,44 +30,45 @@ export default function DataBMNUserPage() {
 
   return (
     <div className="p-1 space-y-2">
-  {/* Header */}
-  <h1 className="pt-0 pb-0 text-sm font-bold">Data BMN</h1>
+      {/* Header */}
+      <h1 className="pt-0 pb-0 text-sm font-bold">Data BMN</h1>
 
-  <div className="flex flex-wrap items-center gap-1">
-    {/* Search */}
-    <Input
-      placeholder="Cari barang..."
-      value={search}
-      onChange={(e) => setSearch(e.target.value)}
-      className="text-xs placeholder:text-xs h-[24px] w-[200px] px-2"
-    />
+      <div className="flex flex-wrap items-center gap-1">
+        {/* Search */}
+        <Input
+          placeholder="Cari barang..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="text-xs placeholder:text-xs h-[24px] w-[200px] px-2"
+        />
 
-    {/* Filter */}
-    <Select onValueChange={setKategori} defaultValue="all">
-      <SelectTrigger className="cursor-pointer text-xs !h-[24px] w-[140px] px-2">
-        <SelectValue placeholder="Kategori" />
-      </SelectTrigger>
-      <SelectContent className="text-xs">
-        <SelectItem value="all" className="text-[10px]">Semua Kategori</SelectItem>
-        <SelectItem value="Laptop" className="text-[10px]">Laptop</SelectItem>
-        <SelectItem value="TV" className="text-[10px]">TV</SelectItem>
-        <SelectItem value="Monitor" className="text-[10px]">Monitor</SelectItem>
-        <SelectItem value="Printer" className="text-[10px]">Printer</SelectItem>
-      </SelectContent>
-    </Select>
+        {/* Filter */}
+        <Select onValueChange={setKategori} defaultValue="all">
+          <SelectTrigger className="cursor-pointer text-xs !h-[24px] w-[140px] px-2">
+            <SelectValue placeholder="Kategori" />
+          </SelectTrigger>
+          <SelectContent className="text-xs">
+            <SelectItem value="all" className="text-[10px]">Semua Kategori</SelectItem>
+            <SelectItem value="Laptop" className="text-[10px]">Laptop</SelectItem>
+            <SelectItem value="TV" className="text-[10px]">TV</SelectItem>
+            <SelectItem value="Monitor" className="text-[10px]">Monitor</SelectItem>
+            <SelectItem value="Printer" className="text-[10px]">Printer</SelectItem>
+          </SelectContent>
+        </Select>
 
-    {/* Reset Button */}
-    <Button
-      variant="outline"
-      className="cursor-pointer text-xs h-[24px] px-3"
-      onClick={() => {
-        setSearch("");
-        setKategori("all");
-      }}
-    >Reset
-    </Button>
+        {/* Reset Button */}
+        <Button
+          variant="outline"
+          className="cursor-pointer text-xs h-[24px] px-3"
+          onClick={() => {
+            setSearch("");
+            setKategori("all");
+          }}
+        >
+          Reset
+        </Button>
+      </div>
 
-  </div>
       {/* Table */}
       <div className="bg-white pb-0 rounded-lg shadow border overflow-x-auto">
         <div className="max-h-[400px] overflow-y-auto">
@@ -64,7 +76,7 @@ export default function DataBMNUserPage() {
             <thead className="bg-blue-100 text-left sticky top-0 z-10">
               <tr>
                 <th className="border p-2">No</th>
-                <th className="border p-2">IKMM/Kode BMN</th>
+                <th className="border p-2">IKMMa</th>
                 <th className="border p-2">Nama</th>
                 <th className="border p-2">Kategori</th>
                 <th className="border p-2">Jumlah</th>
