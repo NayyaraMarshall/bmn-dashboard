@@ -78,7 +78,7 @@ export default function DataBMNAdminPage() {
         {/* Add Button */}
         <Button
           variant="default"
-          className="cursor-pointer text-xs h-[24px] px-3 bg-blue-600 hover:bg-blue-700 text-white"
+          className="cursor-pointer text-xs h-[24px] px-3"
           onClick={() => console.log("Tambah BMN")} 
         >
           + Add

@@ -91,7 +91,7 @@ export default function DataPeminjamanAdminPage() {
         {/* Add Button */}
         <Button
           variant="default"
-          className="cursor-pointer text-xs h-[24px] px-3 bg-blue-600 hover:bg-blue-700 rounded-[1vw] text-white"
+          className="cursor-pointer text-xs h-[24px] px-3"
           onClick={() => console.log("Tambah BMN")}
         >+ Add
         </Button>
