@@ -5,12 +5,14 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { MdDeleteOutline, MdOutlineModeEdit } from "react-icons/md";
+import { useRouter } from "next/navigation";   // 👈 import router
 
 import { dataBMN } from "@/data/dataBMN";
 
 export default function DataBMNAdminPage() {
   const [search, setSearch] = useState("");
   const [kategori, setKategori] = useState("all");
+  const router = useRouter();   // 👈 pakai router
 
   // Sort
   const sortedData = [...dataBMN].sort((a, b) => {
@@ -23,7 +25,7 @@ export default function DataBMNAdminPage() {
     return dateB.getTime() - dateA.getTime(); // terbaru di atas
   });
 
-  // Filter 
+  // Filter
   const filteredData = sortedData.filter((item) => {
     const matchSearch = item.namaBarang.toLowerCase().includes(search.toLowerCase());
     const matchKategori = kategori === "all" || item.kategori === kategori;
@@ -37,7 +39,6 @@ export default function DataBMNAdminPage() {
 
       {/* Search + Filter + Reset + Add */}
       <div className="flex items-center justify-between">
-        
         {/* Search, Filter, Reset */}
         <div className="flex flex-wrap items-center gap-1">
           {/* Search */}
@@ -79,12 +80,11 @@ export default function DataBMNAdminPage() {
         <Button
           variant="default"
           className="cursor-pointer text-xs h-[24px] px-3"
-          onClick={() => console.log("Tambah BMN")} 
+          onClick={() => router.push("/admin/bmn/add-bmn")}   // 👈 redirect ke form
         >
           + Add
         </Button>
       </div>
-
 
       {/* Table */}
       <div className="bg-white pb-0 rounded-lg shadow border overflow-x-auto">

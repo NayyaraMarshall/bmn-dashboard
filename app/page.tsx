@@ -38,7 +38,7 @@ export default function LoginPage() {
         <button
           onClick={handleUserClick}
           disabled={loading}
-          className={`w-full text-xs flex items-center font-medium py-2 rounded-lg mb-3 flex justify-center items-center ${
+          className={`cursor-pointer w-full text-xs flex items-center font-medium py-2 rounded-lg mb-3 flex justify-center items-center ${
             loading
               ? 'bg-blue-400 cursor-not-allowed'
               : 'bg-blue-600 hover:bg-blue-700 text-white'
@@ -82,7 +82,7 @@ export default function LoginPage() {
         {/* Admin */}
         <button
           onClick={() => router.push('/admin-login')}
-          className="w-full flex items-center justify-center font-medium text-white text-xs py-2 rounded-md text-white py-1.5 rounded-lg bg-purple-500 hover:bg-purple-600 mt-2"
+          className="cursor-pointer w-full flex items-center justify-center font-medium text-white text-xs py-2 rounded-md text-white py-1.5 rounded-lg bg-purple-500 hover:bg-purple-600 mt-2"
         >
           Login sebagai Admin
         </button>
