@@ -5,24 +5,27 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { MdDeleteOutline, MdOutlineModeEdit } from "react-icons/md";
-import { useRouter } from "next/navigation";   // 👈 import router
+import { useRouter } from "next/navigation";
 
 import { dataBMN } from "@/data/dataBMN";
 
 export default function DataBMNAdminPage() {
   const [search, setSearch] = useState("");
   const [kategori, setKategori] = useState("all");
-  const router = useRouter();  
+  const router = useRouter();
 
-  // Sort
+  // Fungsi parse tanggal universal
+  const parseDate = (str: string) => {
+    const parts = str.split(/[-/]/); // bisa "26-08-2024" atau "26/08/2024"
+    const [day, month, year] = parts;
+    return new Date(Number(year), Number(month) - 1, Number(day));
+  };
+
+  // Sort (terbaru paling atas)
   const sortedData = [...dataBMN].sort((a, b) => {
-    const [dayA, monthA, yearA] = a.tanggalPerolehan.split("/");
-    const [dayB, monthB, yearB] = b.tanggalPerolehan.split("/");
-
-    const dateA = new Date(`${yearA}-${monthA}-${dayA}`);
-    const dateB = new Date(`${yearB}-${monthB}-${dayB}`);
-
-    return dateB.getTime() - dateA.getTime(); // terbaru di atas
+    const dateA = parseDate(a.tanggalPerolehan);
+    const dateB = parseDate(b.tanggalPerolehan);
+    return dateB.getTime() - dateA.getTime();
   });
 
   // Filter
@@ -34,14 +37,10 @@ export default function DataBMNAdminPage() {
 
   return (
     <div className="p-2 space-y-2">
-      {/* Header */}
       <h1 className="pt-0 pb-0 text-xs font-bold">Data BMN</h1>
 
-      {/* Search + Filter + Reset + Add */}
       <div className="flex items-center justify-between">
-        {/* Search, Filter, Reset */}
         <div className="flex flex-wrap items-center gap-1">
-          {/* Search */}
           <Input
             placeholder="Cari barang..."
             value={search}
@@ -49,7 +48,6 @@ export default function DataBMNAdminPage() {
             className="text-xs placeholder:text-xs h-[24px] w-[200px] px-2"
           />
 
-          {/* Filter */}
           <Select onValueChange={setKategori} defaultValue="all">
             <SelectTrigger className="cursor-pointer text-xs !h-[24px] w-[140px] px-2">
               <SelectValue placeholder="Kategori" />
@@ -63,7 +61,6 @@ export default function DataBMNAdminPage() {
             </SelectContent>
           </Select>
 
-          {/* Reset Button */}
           <Button
             variant="outline"
             className="cursor-pointer text-xs h-[24px] px-3"
@@ -76,16 +73,14 @@ export default function DataBMNAdminPage() {
           </Button>
         </div>
 
-        {/* Add Button */}
         <Button
           className="bg-blue-500 hover:bg-blue-600 cursor-pointer text-xs h-[24px] px-3"
-          onClick={() => router.push("/admin/bmn/add-bmn")}  
+          onClick={() => router.push("/admin/bmn/add-bmn")}
         >
           + Add
         </Button>
       </div>
 
-      {/* Table */}
       <div className="bg-white pb-0 rounded-lg shadow border overflow-x-auto">
         <div className="max-h-[400px] max-w-[1035px] overflow-y-auto">
           <table className="w-full text-xs border-collapse">
@@ -116,11 +111,9 @@ export default function DataBMNAdminPage() {
                   <td className="border p-2">{item.kondisiRusak}</td>
                   <td className="border p-2">{item.kondisiBaik - item.dipinjam}</td>
                   <td className="border p-2 text-center">
-                    {/* tombol edit */}
                     <button className="cursor-pointer rounded bg-gray-300 p-1 text-gray-500 hover:text-white hover:bg-blue-600">
                       <MdOutlineModeEdit className="text-lg" />
                     </button>
-                    {/* tombol delete */}
                     <button className="cursor-pointer rounded bg-gray-300 p-1 text-gray-500 hover:text-white hover:bg-red-600 mx-1">
                       <MdDeleteOutline className="text-lg" />
                     </button>
