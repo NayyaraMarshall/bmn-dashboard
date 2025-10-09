@@ -31,21 +31,22 @@ export default function Sidebar({ role }: { role: "admin" | "user" }) {
         </div>
         <nav className="px-4">
           <ul className="space-y-2">
-            {menuItems.map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className={`text-[10px] mb-2 flex font-medium items-center gap-3 block py-2 px-3 rounded-md transition-colors ${
-                    pathname === item.href
-                      ? activeColor
-                      : "bg-gray-200 " + hoverColor
-                  }`}
-                >
-                  {item.icon}
-                  {item.label}
-                </Link>
-              </li>
-            ))}
+            {menuItems.map((item) => {
+              const isActive = pathname.startsWith(item.href); // 👈 ganti logic di sini
+              return (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className={`text-[10px] mb-2 flex font-medium items-center gap-3 block py-2 px-3 rounded-md transition-colors ${
+                      isActive ? activeColor : "bg-gray-200 " + hoverColor
+                    }`}
+                  >
+                    {item.icon}
+                    {item.label}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </nav>
       </div>

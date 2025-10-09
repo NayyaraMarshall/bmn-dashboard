@@ -12,7 +12,7 @@ import { dataBMN } from "@/data/dataBMN";
 export default function DataBMNAdminPage() {
   const [search, setSearch] = useState("");
   const [kategori, setKategori] = useState("all");
-  const router = useRouter();   // 👈 pakai router
+  const router = useRouter();  
 
   // Sort
   const sortedData = [...dataBMN].sort((a, b) => {
@@ -78,9 +78,8 @@ export default function DataBMNAdminPage() {
 
         {/* Add Button */}
         <Button
-          variant="default"
-          className="cursor-pointer text-xs h-[24px] px-3"
-          onClick={() => router.push("/admin/bmn/add-bmn")}   // 👈 redirect ke form
+          className="bg-blue-500 hover:bg-blue-600 cursor-pointer text-xs h-[24px] px-3"
+          onClick={() => router.push("/admin/bmn/add-bmn")}  
         >
           + Add
         </Button>
