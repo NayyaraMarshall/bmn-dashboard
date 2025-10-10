@@ -7,14 +7,14 @@ import { dataBMN, BMN } from "@/data/dataBMN";
 export default function AddBMNPage() {
   const router = useRouter();
 
-  // state
+  // State
   const [namaBarang, setNamaBarang] = useState("");
   const [kategori, setKategori] = useState("");
   const [jumlahBarang, setJumlahBarang] = useState<number | "">("");
   const [tanggalPerolehan, setTanggalPerolehan] = useState("");
-  const [ikmm, setIkmm] = useState(""); // otomatis terisi
+  const [ikmm, setIkmm] = useState(""); // otomatis dari kategori
 
-  // mapping kategori -> ikmm
+  // Mapping kategori   kode IKMM
   const kategoriToIkmm: Record<string, string> = {
     Laptop: "3100106002",
     TV: "3100103002",
@@ -22,13 +22,13 @@ export default function AddBMNPage() {
     Printer: "3100104002",
   };
 
-  // format tanggal
+  // Format tanggal
   const formatDate = (isoDate: string): string => {
     const [year, month, day] = isoDate.split("-");
     return `${day}-${month}-${year}`;
   };
 
-  // submit
+  // Submit
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -55,14 +55,16 @@ export default function AddBMNPage() {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow">
-      <h2 className="text-sm font-bold mb-4">Tambah Data BMN</h2>
+    <div className="rounded-lg bg-white p-6 shadow">
+      <h2 className="mb-4 text-sm font-bold">Tambah Data BMN</h2>
+
       <form className="space-y-4" onSubmit={handleSubmit}>
+        {/* Nama Barang */}
         <div>
-          <label className="block text-xs font-medium mb-1">Nama Barang</label>
+          <label className="mb-1 block text-xs font-medium">Nama Barang *</label>
           <input
             type="text"
-            className="text-xs w-full border px-3 py-2 rounded"
+            className="w-full rounded border px-3 py-2 text-xs"
             placeholder="Masukkan nama barang"
             value={namaBarang}
             onChange={(e) => setNamaBarang(e.target.value)}
@@ -70,11 +72,11 @@ export default function AddBMNPage() {
           />
         </div>
 
-        {/* kategori */}
+        {/* Kategori */}
         <div>
-          <label className="block text-xs font-medium mb-1">Kategori</label>
+          <label className="mb-1 block text-xs font-medium">Kategori *</label>
           <select
-            className="text-xs w-full border px-3 py-2 rounded"
+            className="w-full rounded border px-3 py-2 text-xs"
             value={kategori}
             onChange={(e) => {
               const val = e.target.value;
@@ -91,24 +93,24 @@ export default function AddBMNPage() {
           </select>
         </div>
 
-        {/* ikmm otomatis */}
+        {/* IKMM (otomatis) */}
         <div>
-          <label className="block text-xs font-medium mb-1">Kode IKMM</label>
+          <label className="mb-1 block text-xs font-medium">Kode IKMM</label>
           <input
             type="text"
-            className="text-xs w-full border px-3 py-2 rounded bg-gray-100"
+            className="w-full rounded border bg-gray-100 px-3 py-2 text-xs"
             value={ikmm}
             readOnly
           />
         </div>
 
-        {/* jumlah */}
+        {/* Jumlah */}
         <div>
-          <label className="block text-xs font-medium mb-1">Jumlah</label>
+          <label className="mb-1 block text-xs font-medium">Jumlah *</label>
           <input
             type="number"
             min={1}
-            className="text-xs w-full border px-3 py-2 rounded"
+            className="w-full rounded border px-3 py-2 text-xs"
             placeholder="Masukkan jumlah"
             value={jumlahBarang}
             onChange={(e) =>
@@ -120,29 +122,29 @@ export default function AddBMNPage() {
           />
         </div>
 
-        {/* tanggal */}
+        {/* Tanggal Perolehan */}
         <div>
-          <label className="block text-xs font-medium mb-1">Tanggal Perolehan</label>
+          <label className="mb-1 block text-xs font-medium">Tanggal Perolehan *</label>
           <input
             type="date"
-            className="text-xs w-full border px-3 py-2 rounded"
+            className="w-full rounded border px-3 py-2 text-xs"
             value={tanggalPerolehan}
             onChange={(e) => setTanggalPerolehan(e.target.value)}
             required
           />
         </div>
 
-        {/* tombol */}
-        <div className="flex gap-2 justify-end">
+        {/* Tombol Aksi */}
+        <div className="flex justify-end gap-2">
           <button
             type="submit"
-            className="cursor-pointer text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
+            className="cursor-pointer rounded bg-blue-500 px-2 py-1 text-xs text-white hover:bg-blue-600"
           >
             Simpan
           </button>
           <button
             type="button"
-            className="cursor-pointer text-xs bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+            className="cursor-pointer rounded bg-red-500 px-2 py-1 text-xs text-white hover:bg-red-600"
             onClick={() => router.push("/admin/bmn")}
           >
             Kembali

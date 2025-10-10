@@ -13,30 +13,33 @@ import {
 import { MdDeleteOutline, MdOutlineModeEdit } from "react-icons/md";
 
 import { dataPeminjaman } from "@/data/dataPeminjaman";
+import { useRouter } from "next/navigation";
 
+// Helper parse tanggal format dd-mm-yyyy
 function parseDateDMY(dateStr: string): Date {
-  const [day, month, year] = dateStr.split("/").map(Number);
+  const [day, month, year] = dateStr.split("-").map(Number);
   return new Date(year, month - 1, day);
 }
-
-const sortedData = [...dataPeminjaman].sort((a, b) => {
-  const dateA = parseDateDMY(a.tanggalPinjam);
-  const dateB = parseDateDMY(b.tanggalPinjam);
-  return dateB.getTime() - dateA.getTime();
-});
 
 export default function DataPeminjamanAdminPage() {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("all");
+  const router = useRouter();
 
-  // Filter data setelah disortir
-  const filteredData = sortedData.filter((item) => {
-    const matchSearch = item.namaPeminjam
-      .toLowerCase()
-      .includes(search.toLowerCase());
-    const matchStatus = status === "all" || item.statusPeminjaman === status;
-    return matchSearch && matchStatus;
-  });
+  // Filter + Sort data
+  const filteredData = dataPeminjaman
+    .filter((item) => {
+      const matchSearch = item.namaPeminjam
+        .toLowerCase()
+        .includes(search.toLowerCase());
+      const matchStatus = status === "all" || item.statusPeminjaman === status;
+      return matchSearch && matchStatus;
+    })
+    .sort((a, b) => {
+      const dateA = parseDateDMY(a.tanggalPinjam);
+      const dateB = parseDateDMY(b.tanggalPinjam);
+      return dateB.getTime() - dateA.getTime(); // terbaru di atas
+    });
 
   return (
     <div className="p-2 space-y-2">
@@ -45,55 +48,57 @@ export default function DataPeminjamanAdminPage() {
 
       {/* Search + Filter + Reset + Add */}
       <div className="flex items-center justify-between">
-      
-      {/* Search, Filter, Reset */}
-      <div className="flex flex-wrap items-center gap-1">
-        {/* Search */}
-        <Input
-          placeholder="Cari peminjam..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="text-xs placeholder:text-xs h-[24px] w-[200px] px-2"
-        />
+        {/* Search, Filter, Reset */}
+        <div className="flex flex-wrap items-center gap-1">
+          {/* Search */}
+          <Input
+            placeholder="Cari peminjam..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="text-xs placeholder:text-xs h-[24px] w-[200px] px-2"
+          />
 
-        {/* Filter status */}
-        <Select onValueChange={setStatus} defaultValue="all">
-          <SelectTrigger className="cursor-pointer text-xs !h-[24px] w-[140px] px-2">
-            <SelectValue placeholder="Status" />
-          </SelectTrigger>
-          <SelectContent className="text-xs">
-            <SelectItem value="all" className="text-[10px]">
-              Semua Status
-            </SelectItem>
-            <SelectItem value="Aktif" className="text-[10px]">
-              Aktif
-            </SelectItem>
-            <SelectItem value="Selesai" className="text-[10px]">
-              Selesai
-            </SelectItem>
-            <SelectItem value="Terlambat" className="text-[10px]">
-              Terlambat
-            </SelectItem>
-          </SelectContent>
-        </Select>
+          {/* Filter status */}
+          <Select onValueChange={setStatus} defaultValue="all">
+            <SelectTrigger className="cursor-pointer text-xs !h-[24px] w-[140px] px-2">
+              <SelectValue placeholder="Status" />
+            </SelectTrigger>
+            <SelectContent className="text-xs">
+              <SelectItem value="all" className="text-[10px]">
+                Semua Status
+              </SelectItem>
+              <SelectItem value="Aktif" className="text-[10px]">
+                Aktif
+              </SelectItem>
+              <SelectItem value="Selesai" className="text-[10px]">
+                Selesai
+              </SelectItem>
+              <SelectItem value="Terlambat" className="text-[10px]">
+                Terlambat
+              </SelectItem>
+            </SelectContent>
+          </Select>
 
-        {/* Reset Button */}
-        <Button
-          variant="outline"
-          className="cursor-pointer text-xs h-[24px] px-3"
-          onClick={() => {
-            setSearch("");
-            setStatus("all");
-          }}>Reset
-        </Button>
+          {/* Reset Button */}
+          <Button
+            variant="outline"
+            className="cursor-pointer text-xs h-[24px] px-3"
+            onClick={() => {
+              setSearch("");
+              setStatus("all");
+            }}
+          >
+            Reset
+          </Button>
         </div>
 
         {/* Add Button */}
         <Button
           variant="default"
           className="cursor-pointer text-xs h-[24px] px-3"
-          onClick={() => console.log("Tambah BMN")}
-        >+ Add
+          onClick={() => router.push("/admin/peminjaman/add-peminjaman")}
+        >
+          + Tambah
         </Button>
       </div>
 

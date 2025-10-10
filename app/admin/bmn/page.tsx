@@ -16,7 +16,7 @@ export default function DataBMNAdminPage() {
 
   // Fungsi parse tanggal universal
   const parseDate = (str: string) => {
-    const parts = str.split(/[-/]/); // bisa "26-08-2024" atau "26/08/2024"
+    const parts = str.split(/[-/]/); 
     const [day, month, year] = parts;
     return new Date(Number(year), Number(month) - 1, Number(day));
   };
@@ -76,8 +76,7 @@ export default function DataBMNAdminPage() {
         <Button
           className="bg-blue-500 hover:bg-blue-600 cursor-pointer text-xs h-[24px] px-3"
           onClick={() => router.push("/admin/bmn/add-bmn")}
-        >
-          + Add
+        >+ Tambah
         </Button>
       </div>
 

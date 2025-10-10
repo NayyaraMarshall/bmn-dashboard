@@ -1,4 +1,23 @@
-export const dataPeminjaman = [
+
+export type Peminjaman = {
+  idPeminjaman: number;
+  nomorPeminjaman: string;
+  namaPeminjam: string;
+  statusPegawai: "PPPK" | "KI" | "PNS" | "Magang";
+  nip: string;
+  ikmm: number;
+  namaBarang: string;
+  kategori: string;
+  jumlahPinjam: number;
+  tanggalPinjam: string;
+  tanggalKembali: string | null;
+  tujuan: string;
+  keterangan: string | null;
+  statusPeminjaman: "Aktif" | "Selesai";
+};
+
+// data dummy awal
+export const dataPeminjaman: Peminjaman[] = [
   {
     idPeminjaman: 1,
     nomorPeminjaman: "70/BDI-TB/I/2024",
@@ -41,7 +60,7 @@ export const dataPeminjaman = [
     namaBarang: "Canon Pixma G2020",
     kategori: "Printer",
     jumlahPinjam: 1,
-    tanggalPinjam: "10/07/2025",
+    tanggalPinjam: "10-07-2025",
     tanggalKembali: "12-07-2025",
     tujuan: "Cetak Dokumen",
     keterangan: "Dengan tinta hitam & warna",
