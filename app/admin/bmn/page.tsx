@@ -39,8 +39,10 @@ export default function DataBMNAdminPage() {
     <div className="p-2 space-y-2">
       <h1 className="pt-0 pb-0 text-xs font-bold">Data BMN</h1>
 
+      {/* Search + Filter + Add */}
       <div className="flex items-center justify-between">
         <div className="flex flex-wrap items-center gap-1">
+          {/* Search */}
           <Input
             placeholder="Cari barang..."
             value={search}
@@ -48,6 +50,7 @@ export default function DataBMNAdminPage() {
             className="text-xs placeholder:text-xs h-[24px] w-[200px] px-2"
           />
 
+          {/* Filter kategori */}
           <Select onValueChange={setKategori} defaultValue="all">
             <SelectTrigger className="cursor-pointer text-xs !h-[24px] w-[140px] px-2">
               <SelectValue placeholder="Kategori" />
@@ -61,6 +64,7 @@ export default function DataBMNAdminPage() {
             </SelectContent>
           </Select>
 
+          {/* Reset */}
           <Button
             variant="outline"
             className="cursor-pointer text-xs h-[24px] px-3"
@@ -73,13 +77,16 @@ export default function DataBMNAdminPage() {
           </Button>
         </div>
 
+        {/* Tambah BMN */}
         <Button
           className="bg-blue-500 hover:bg-blue-600 cursor-pointer text-xs h-[24px] px-3"
           onClick={() => router.push("/admin/bmn/add-bmn")}
-        >+ Tambah
+        >
+          + Tambah
         </Button>
       </div>
 
+      {/* Tabel Data */}
       <div className="bg-white pb-0 rounded-lg shadow border overflow-x-auto">
         <div className="max-h-[400px] max-w-[1035px] overflow-y-auto">
           <table className="w-full text-xs border-collapse">
@@ -94,7 +101,7 @@ export default function DataBMNAdminPage() {
                 <th className="border p-2">Kondisi Baik</th>
                 <th className="border p-2">Dalam Perbaikan</th>
                 <th className="border p-2">Jumlah Tersedia</th>
-                <th className="border p-2">Action</th>
+                <th className="border p-2 text-center">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -110,12 +117,22 @@ export default function DataBMNAdminPage() {
                   <td className="border p-2">{item.kondisiRusak}</td>
                   <td className="border p-2">{item.kondisiBaik - item.dipinjam}</td>
                   <td className="border p-2 text-center">
-                    <button className="cursor-pointer rounded bg-gray-300 p-1 text-gray-500 hover:text-white hover:bg-blue-600">
-                      <MdOutlineModeEdit className="text-lg" />
-                    </button>
-                    <button className="cursor-pointer rounded bg-gray-300 p-1 text-gray-500 hover:text-white hover:bg-red-600 mx-1">
-                      <MdDeleteOutline className="text-lg" />
-                    </button>
+                    <div className="flex justify-center gap-1">
+                      {/* Tombol Edit */}
+                      <button
+                        className="cursor-pointer rounded bg-gray-300 p-1 text-gray-500 hover:text-white hover:bg-blue-600"
+                        onClick={() => router.push(`/admin/bmn/edit/${item.idBMN}`)}
+                      >
+                        <MdOutlineModeEdit className="text-lg" />
+                      </button>
+
+                      {/* Tombol Delete */}
+                      <button
+                        className="cursor-pointer rounded bg-gray-300 p-1 text-gray-500 hover:text-white hover:bg-red-600"
+                      >
+                        <MdDeleteOutline className="text-lg" />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

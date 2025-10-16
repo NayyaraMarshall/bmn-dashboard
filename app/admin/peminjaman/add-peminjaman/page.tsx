@@ -35,7 +35,7 @@ export default function AddPeminjamanPage() {
     return `${day}-${month}-${year}`;
   };
 
-  // submit
+  // validasi submit
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -75,7 +75,7 @@ export default function AddPeminjamanPage() {
       tanggalPinjam: formatDate(tanggalPinjam),
       tanggalKembali: tanggalKembali ? formatDate(tanggalKembali) : null,
       tujuan,
-      keterangan: keterangan || "", // biar kosong gapapa
+      keterangan: keterangan || "", 
       statusPeminjaman: "Aktif",
     };
 
