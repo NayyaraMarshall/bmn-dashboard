@@ -98,7 +98,7 @@ export default function AddBMNPage() {
           <label className="mb-1 block text-xs font-medium">Kode IKMM</label>
           <input
             type="text"
-            className="w-full rounded border bg-gray-100 px-3 py-2 text-xs"
+            className="w-full text-gray-700 rounded border bg-gray-100 px-3 py-2 text-xs"
             value={ikmm}
             readOnly
           />
