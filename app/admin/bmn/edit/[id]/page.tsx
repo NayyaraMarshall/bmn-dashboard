@@ -35,7 +35,7 @@ export default function EditBMNPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!confirm("Apakah kamu yakin ingin menyimpan perubahan ini?")) return;
+    if (!confirm("Apakah Anda yakin ingin menyimpan perubahan ini?")) return;
 
     const index = dataBMN.findIndex((item) => item.idBMN === idBMN);
     if (index !== -1) {

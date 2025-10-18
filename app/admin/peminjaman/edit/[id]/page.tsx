@@ -12,9 +12,7 @@ export default function EditPeminjamanPage() {
   const [peminjaman, setPeminjaman] = useState<Peminjaman | null>(null);
   const [tanggalKembali, setTanggalKembali] = useState("");
   const [keterangan, setKeterangan] = useState("");
-  const [status, setStatus] = useState<"Aktif" | "Selesai">(
-    "Aktif"
-  );
+  const [status, setStatus] = useState<"Aktif" | "Selesai">("Aktif");
 
   // format tanggal ke ISO yyyy-mm-dd (biar masuk ke input date)
   const parseDateToISO = (dateStr: string | null): string => {
@@ -25,7 +23,9 @@ export default function EditPeminjamanPage() {
 
   // ambil data peminjaman berdasarkan ID
   useEffect(() => {
-    const found = dataPeminjaman.find((item) => item.idPeminjaman === idPeminjaman);
+    const found = dataPeminjaman.find(
+      (item) => item.idPeminjaman === idPeminjaman
+    );
     if (found) {
       setPeminjaman(found);
       setTanggalKembali(parseDateToISO(found.tanggalKembali));
@@ -71,7 +71,7 @@ export default function EditPeminjamanPage() {
     );
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow">
+    <div className="bg-white p-4 rounded-lg shadow max-h-[80vh] overflow-y-auto">
       <h2 className="text-sm font-bold mb-4">Edit Data Peminjaman</h2>
 
       <form className="space-y-4" onSubmit={handleSubmit}>
@@ -80,7 +80,7 @@ export default function EditPeminjamanPage() {
           <label className="block text-xs font-medium mb-1">Nama Peminjam</label>
           <input
             type="text"
-            className="text-xs w-full border px-3 py-2 rounded bg-gray-100"
+            className="text-xs text-gray-700 w-full border px-3 py-2 rounded bg-gray-100"
             value={peminjaman.namaPeminjam}
             readOnly
           />
@@ -91,7 +91,7 @@ export default function EditPeminjamanPage() {
           <label className="block text-xs font-medium mb-1">NIP</label>
           <input
             type="text"
-            className="text-xs w-full border px-3 py-2 rounded bg-gray-100"
+            className="text-xs text-gray-700 w-full border px-3 py-2 rounded bg-gray-100"
             value={peminjaman.nip}
             readOnly
           />
@@ -102,7 +102,7 @@ export default function EditPeminjamanPage() {
           <label className="block text-xs font-medium mb-1">Nama Barang</label>
           <input
             type="text"
-            className="text-xs w-full border px-3 py-2 rounded bg-gray-100"
+            className="text-xs text-gray-700 w-full border px-3 py-2 rounded bg-gray-100"
             value={peminjaman.namaBarang}
             readOnly
           />
@@ -137,7 +137,7 @@ export default function EditPeminjamanPage() {
             className="text-xs w-full border px-3 py-2 rounded"
             value={status}
             onChange={(e) =>
-              setStatus(e.target.value as "Aktif" | "Selesai" )
+              setStatus(e.target.value as "Aktif" | "Selesai")
             }
           >
             <option value="Aktif">Aktif</option>

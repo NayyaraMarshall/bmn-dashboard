@@ -3,26 +3,33 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { MdDeleteOutline, MdOutlineModeEdit } from "react-icons/md";
 import { useRouter } from "next/navigation";
 
-import { dataBMN } from "@/data/dataBMN";
+import { dataBMN as initialDataBMN } from "@/data/dataBMN";
 
 export default function DataBMNAdminPage() {
   const [search, setSearch] = useState("");
   const [kategori, setKategori] = useState("all");
+  const [bmnData, setBmnData] = useState(initialDataBMN); // simpan data di state
   const router = useRouter();
 
   // Fungsi parse tanggal universal
   const parseDate = (str: string) => {
-    const parts = str.split(/[-/]/); 
+    const parts = str.split(/[-/]/);
     const [day, month, year] = parts;
     return new Date(Number(year), Number(month) - 1, Number(day));
   };
 
   // Sort (terbaru paling atas)
-  const sortedData = [...dataBMN].sort((a, b) => {
+  const sortedData = [...bmnData].sort((a, b) => {
     const dateA = parseDate(a.tanggalPerolehan);
     const dateB = parseDate(b.tanggalPerolehan);
     return dateB.getTime() - dateA.getTime();
@@ -30,10 +37,22 @@ export default function DataBMNAdminPage() {
 
   // Filter
   const filteredData = sortedData.filter((item) => {
-    const matchSearch = item.namaBarang.toLowerCase().includes(search.toLowerCase());
+    const matchSearch = item.namaBarang
+      .toLowerCase()
+      .includes(search.toLowerCase());
     const matchKategori = kategori === "all" || item.kategori === kategori;
     return matchSearch && matchKategori;
   });
+
+  // Fungsi hapus data
+  const handleDelete = (id: number) => {
+    const confirmDelete = confirm("Apakah kamu yakin ingin menghapus data ini?");
+    if (!confirmDelete) return;
+
+    const updatedData = bmnData.filter((item) => item.idBMN !== id);
+    setBmnData(updatedData);
+    alert("Data berhasil dihapus!");
+  };
 
   return (
     <div className="p-2 space-y-2">
@@ -56,11 +75,21 @@ export default function DataBMNAdminPage() {
               <SelectValue placeholder="Kategori" />
             </SelectTrigger>
             <SelectContent className="text-xs">
-              <SelectItem value="all" className="text-[10px]">Semua Kategori</SelectItem>
-              <SelectItem value="Laptop" className="text-[10px]">Laptop</SelectItem>
-              <SelectItem value="TV" className="text-[10px]">TV</SelectItem>
-              <SelectItem value="Monitor" className="text-[10px]">Monitor</SelectItem>
-              <SelectItem value="Printer" className="text-[10px]">Printer</SelectItem>
+              <SelectItem value="all" className="text-[10px]">
+                Semua Kategori
+              </SelectItem>
+              <SelectItem value="Laptop" className="text-[10px]">
+                Laptop
+              </SelectItem>
+              <SelectItem value="TV" className="text-[10px]">
+                TV
+              </SelectItem>
+              <SelectItem value="Monitor" className="text-[10px]">
+                Monitor
+              </SelectItem>
+              <SelectItem value="Printer" className="text-[10px]">
+                Printer
+              </SelectItem>
             </SelectContent>
           </Select>
 
@@ -105,37 +134,53 @@ export default function DataBMNAdminPage() {
               </tr>
             </thead>
             <tbody>
-              {filteredData.map((item, index) => (
-                <tr key={item.idBMN} className="hover:bg-gray-50">
-                  <td className="border p-2">{index + 1}</td>
-                  <td className="border p-2">{item.ikmm}</td>
-                  <td className="border p-2">{item.namaBarang}</td>
-                  <td className="border p-2">{item.kategori}</td>
-                  <td className="border p-2">{item.jumlahBarang}</td>
-                  <td className="border p-2">{item.tanggalPerolehan}</td>
-                  <td className="border p-2">{item.kondisiBaik}</td>
-                  <td className="border p-2">{item.kondisiRusak}</td>
-                  <td className="border p-2">{item.kondisiBaik - item.dipinjam}</td>
-                  <td className="border p-2 text-center">
-                    <div className="flex justify-center gap-1">
-                      {/* Tombol Edit */}
-                      <button
-                        className="cursor-pointer rounded bg-gray-300 p-1 text-gray-500 hover:text-white hover:bg-blue-600"
-                        onClick={() => router.push(`/admin/bmn/edit/${item.idBMN}`)}
-                      >
-                        <MdOutlineModeEdit className="text-lg" />
-                      </button>
+              {filteredData.length > 0 ? (
+                filteredData.map((item, index) => (
+                  <tr key={item.idBMN} className="hover:bg-gray-50">
+                    <td className="border p-2">{index + 1}</td>
+                    <td className="border p-2">{item.ikmm}</td>
+                    <td className="border p-2">{item.namaBarang}</td>
+                    <td className="border p-2">{item.kategori}</td>
+                    <td className="border p-2">{item.jumlahBarang}</td>
+                    <td className="border p-2">{item.tanggalPerolehan}</td>
+                    <td className="border p-2">{item.kondisiBaik}</td>
+                    <td className="border p-2">{item.kondisiRusak}</td>
+                    <td className="border p-2">
+                      {item.kondisiBaik - item.dipinjam}
+                    </td>
+                    <td className="border p-2 text-center">
+                      <div className="flex justify-center gap-1">
+                        {/* Tombol Edit */}
+                        <button
+                          className="cursor-pointer rounded bg-gray-300 p-1 text-gray-500 hover:text-white hover:bg-blue-600"
+                          onClick={() =>
+                            router.push(`/admin/bmn/edit/${item.idBMN}`)
+                          }
+                        >
+                          <MdOutlineModeEdit className="text-lg" />
+                        </button>
 
-                      {/* Tombol Delete */}
-                      <button
-                        className="cursor-pointer rounded bg-gray-300 p-1 text-gray-500 hover:text-white hover:bg-red-600"
-                      >
-                        <MdDeleteOutline className="text-lg" />
-                      </button>
-                    </div>
+                        {/* Tombol Delete */}
+                        <button
+                          className="cursor-pointer rounded bg-gray-300 p-1 text-gray-500 hover:text-white hover:bg-red-600"
+                          onClick={() => handleDelete(item.idBMN)}
+                        >
+                          <MdDeleteOutline className="text-lg" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td
+                    colSpan={10}
+                    className="text-center text-gray-500 text-xs p-3"
+                  >
+                    Tidak ada data yang cocok
                   </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>

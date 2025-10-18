@@ -11,9 +11,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { MdDeleteOutline, MdOutlineModeEdit } from "react-icons/md";
-
-import { dataPeminjaman } from "@/data/dataPeminjaman";
 import { useRouter } from "next/navigation";
+
+import { dataPeminjaman as initialDataPeminjaman } from "@/data/dataPeminjaman";
 
 // Helper parse tanggal format dd-mm-yyyy
 function parseDateDMY(dateStr: string): Date {
@@ -24,10 +24,11 @@ function parseDateDMY(dateStr: string): Date {
 export default function DataPeminjamanAdminPage() {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("all");
+  const [peminjamanData, setPeminjamanData] = useState(initialDataPeminjaman);
   const router = useRouter();
 
-  // Filter + Sort data
-  const filteredData = dataPeminjaman
+  // Filter + Sort data (pakai data dari state)
+  const filteredData = peminjamanData
     .filter((item) => {
       const matchSearch = item.namaPeminjam
         .toLowerCase()
@@ -40,6 +41,23 @@ export default function DataPeminjamanAdminPage() {
       const dateB = parseDateDMY(b.tanggalPinjam);
       return dateB.getTime() - dateA.getTime(); // terbaru di atas
     });
+
+  // 🗑️ Fungsi hapus data
+  const handleDelete = (id: number) => {
+    const confirmDelete = confirm("Apakah kamu yakin ingin menghapus data ini?");
+    if (!confirmDelete) return;
+
+    const updatedData = peminjamanData.filter(
+      (item) => item.idPeminjaman !== id
+    );
+    setPeminjamanData(updatedData);
+    alert("Data berhasil dihapus!");
+  };
+
+  // ✏️ Fungsi edit
+  const handleEdit = (id: number) => {
+    router.push(`/admin/peminjaman/edit/${id}`);
+  };
 
   return (
     <div className="p-2 space-y-2">
@@ -95,7 +113,7 @@ export default function DataPeminjamanAdminPage() {
         {/* Add Button */}
         <Button
           variant="default"
-          className="cursor-pointer text-xs h-[24px] px-3"
+          className="bg-blue-500 hover:bg-blue-600 cursor-pointer text-xs h-[24px] px-3"
           onClick={() => router.push("/admin/peminjaman/add-peminjaman")}
         >
           + Tambah
@@ -125,37 +143,54 @@ export default function DataPeminjamanAdminPage() {
               </tr>
             </thead>
             <tbody>
-              {filteredData.map((item, index) => (
-                <tr key={item.idPeminjaman} className="hover:bg-gray-50">
-                  <td className="border p-2">{index + 1}</td>
-                  <td className="border p-2">{item.nomorPeminjaman}</td>
-                  <td className="border p-2">{item.namaPeminjam}</td>
-                  <td className="border p-2">{item.statusPegawai}</td>
-                  <td className="border p-2">{item.nip}</td>
-                  <td className="border p-2">{item.ikmm}</td>
-                  <td className="border p-2">{item.namaBarang}</td>
-                  <td className="border p-2">{item.kategori}</td>
-                  <td className="border p-2">{item.jumlahPinjam}</td>
-                  <td className="border p-2">{item.tanggalPinjam}</td>
-                  <td className="border p-2">
-                    {item.tanggalKembali || "-"}
-                  </td>
-                  <td className="border p-2">{item.keterangan}</td>
-                  <td className="border p-2">{item.statusPeminjaman}</td>
-                  <td className="border p-2 text-center">
-                    <div className="flex justify-center gap-1">
-                      {/* tombol edit */}
-                      <button className="cursor-pointer rounded bg-gray-300 p-1 text-gray-500 hover:text-white hover:bg-blue-600">
-                        <MdOutlineModeEdit className="text-lg" />
-                      </button>
-                      {/* tombol delete */}
-                      <button className="cursor-pointer rounded bg-gray-300 p-1 text-gray-500 hover:text-white hover:bg-red-600">
-                        <MdDeleteOutline className="text-lg" />
-                      </button>
-                    </div>
+              {filteredData.length > 0 ? (
+                filteredData.map((item, index) => (
+                  <tr key={item.idPeminjaman} className="hover:bg-gray-50">
+                    <td className="border p-2">{index + 1}</td>
+                    <td className="border p-2">{item.nomorPeminjaman}</td>
+                    <td className="border p-2">{item.namaPeminjam}</td>
+                    <td className="border p-2">{item.statusPegawai}</td>
+                    <td className="border p-2">{item.nip}</td>
+                    <td className="border p-2">{item.ikmm}</td>
+                    <td className="border p-2">{item.namaBarang}</td>
+                    <td className="border p-2">{item.kategori}</td>
+                    <td className="border p-2">{item.jumlahPinjam}</td>
+                    <td className="border p-2">{item.tanggalPinjam}</td>
+                    <td className="border p-2">
+                      {item.tanggalKembali || "-"}
+                    </td>
+                    <td className="border p-2">{item.keterangan}</td>
+                    <td className="border p-2">{item.statusPeminjaman}</td>
+                    <td className="border p-2 text-center">
+                      <div className="flex justify-center gap-1">
+                        {/* tombol edit */}
+                        <button
+                          className="cursor-pointer rounded bg-gray-300 p-1 text-gray-500 hover:text-white hover:bg-blue-600"
+                          onClick={() => handleEdit(item.idPeminjaman)}
+                        >
+                          <MdOutlineModeEdit className="text-lg" />
+                        </button>
+                        {/* tombol delete */}
+                        <button
+                          className="cursor-pointer rounded bg-gray-300 p-1 text-gray-500 hover:text-white hover:bg-red-600"
+                          onClick={() => handleDelete(item.idPeminjaman)}
+                        >
+                          <MdDeleteOutline className="text-lg" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td
+                    colSpan={14}
+                    className="text-center text-gray-500 text-xs p-3"
+                  >
+                    Tidak ada data peminjaman
                   </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>
