@@ -17,7 +17,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-blue-100">
       <div className="bg-white p-6 rounded-xl shadow-md w-full max-w-sm">
-        {/* Logo */}
+        {/* logo */}
         <img
           src="/logopu.png"
           alt="Logo Perusahaan"
@@ -25,7 +25,7 @@ export default function LoginPage() {
           className="mx-auto mb-3"
         />
 
-        {/* Header */}
+        {/* header */}
         <h1 className="text-base font-bold text-center mb-4 text-gray-800 leading-tight">
           Dashboard Monitoring <br /> Barang Milik Negara (BMN)
           <br />
@@ -34,7 +34,7 @@ export default function LoginPage() {
           </span>
         </h1>
 
-        {/* User */}
+        {/* button user */}
         <button
           onClick={handleUserClick}
           disabled={loading}
@@ -79,7 +79,7 @@ export default function LoginPage() {
           <div className="flex-grow border-t border-gray-300"></div>
         </div>
 
-        {/* Admin */}
+        {/* button admin */}
         <button
           onClick={() => router.push('/admin-login')}
           className="cursor-pointer w-full flex items-center justify-center font-medium text-white text-xs py-2 rounded-md text-white py-1.5 rounded-lg bg-purple-500 hover:bg-purple-600 mt-2"

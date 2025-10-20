@@ -31,7 +31,7 @@ const SmallCard = ({ children, className = "" }: SmallCardProps) => (
 export default function Dashboard() {
   return (
   <div className="grid grid-cols-5 grid-rows-3 gap-3 p-3">
-  {/* Total BMN */}
+  {/* total BMN */}
   <SmallCard className="col-span-1 row-span-2">
     <CardHeader className="p-2 pb-0">
       <CardTitle className="text-sm">Total Unit BMN</CardTitle>
@@ -55,7 +55,7 @@ export default function Dashboard() {
     </SmallCard>
   ))}
 
-  {/* Total BMN di Gudang */}
+  {/* total BMN di gudang */}
   <SmallCard className="col-span-1 row-span-1">
     <CardHeader className="p-2">
       <CardTitle className="text-xs">Jumlah BMN dalam Gudang</CardTitle>
@@ -67,7 +67,7 @@ export default function Dashboard() {
     </CardContent>
   </SmallCard>
 
-  {/* Total BMN yang Dipinjam */}
+  {/* total BMN yang dipinjam */}
   <SmallCard className="col-span-1 row-span-1">
     <CardHeader className="p-2">
       <CardTitle className="text-xs">Jumlah BMN Dipinjam</CardTitle>
@@ -79,7 +79,7 @@ export default function Dashboard() {
     </CardContent>
   </SmallCard>
 
-  {/* Pie Chart */}
+  {/* pie chart */}
   <SmallCard className="col-start-2 col-span-2 row-start-2 row-span-3">
     <CardHeader className="p-2 pb-0">
       <CardTitle className="text-xs">Ketersediaan BMN</CardTitle>
@@ -113,7 +113,7 @@ export default function Dashboard() {
     </CardContent>
   </SmallCard>
 
-  {/* Bar Chart */}
+  {/* bar chart */}
   <SmallCard className="col-start-4 col-span-2 row-start-2 row-span-3">
     <CardHeader className="p-2 pb-0">
       <CardTitle className="text-xs">Kategori BMN</CardTitle>

@@ -7,14 +7,14 @@ import { dataBMN, BMN } from "@/data/dataBMN";
 export default function AddBMNPage() {
   const router = useRouter();
 
-  // State
+  // state
   const [namaBarang, setNamaBarang] = useState("");
   const [kategori, setKategori] = useState("");
   const [jumlahBarang, setJumlahBarang] = useState<number | "">("");
   const [tanggalPerolehan, setTanggalPerolehan] = useState("");
-  const [ikmm, setIkmm] = useState(""); // otomatis dari kategori
+  const [ikmm, setIkmm] = useState(""); 
 
-  // Mapping kategori   kode IKMM
+  // mapping kategori - IKMM
   const kategoriToIkmm: Record<string, string> = {
     Laptop: "3100106002",
     TV: "3100103002",
@@ -22,18 +22,23 @@ export default function AddBMNPage() {
     Printer: "3100104002",
   };
 
-  // Format tanggal
+  // format tanggal
   const formatDate = (isoDate: string): string => {
     const [year, month, day] = isoDate.split("-");
     return `${day}-${month}-${year}`;
   };
 
-  // Submit
+  // submit
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!namaBarang || !kategori || !jumlahBarang || !tanggalPerolehan) {
-      alert("Semua field wajib diisi");
+    if (
+      !namaBarang || 
+      !kategori || 
+      !jumlahBarang || 
+      !tanggalPerolehan
+    ) {
+      alert("Semua field wajib diisi!");
       return;
     }
 
@@ -59,7 +64,7 @@ export default function AddBMNPage() {
       <h2 className="mb-4 text-sm font-bold">Tambah Data BMN</h2>
 
       <form className="space-y-4" onSubmit={handleSubmit}>
-        {/* Nama Barang */}
+        {/* nama barang */}
         <div>
           <label className="mb-1 block text-xs font-medium">Nama Barang *</label>
           <input
@@ -72,7 +77,7 @@ export default function AddBMNPage() {
           />
         </div>
 
-        {/* Kategori */}
+        {/* kategori */}
         <div>
           <label className="mb-1 block text-xs font-medium">Kategori *</label>
           <select
@@ -93,7 +98,7 @@ export default function AddBMNPage() {
           </select>
         </div>
 
-        {/* IKMM (otomatis) */}
+        {/* IKMM */}
         <div>
           <label className="mb-1 block text-xs font-medium">Kode IKMM</label>
           <input
@@ -104,7 +109,7 @@ export default function AddBMNPage() {
           />
         </div>
 
-        {/* Jumlah */}
+        {/* jumlah */}
         <div>
           <label className="mb-1 block text-xs font-medium">Jumlah *</label>
           <input
@@ -122,7 +127,7 @@ export default function AddBMNPage() {
           />
         </div>
 
-        {/* Tanggal Perolehan */}
+        {/* tanggal perolehan */}
         <div>
           <label className="mb-1 block text-xs font-medium">Tanggal Perolehan *</label>
           <input
@@ -134,7 +139,7 @@ export default function AddBMNPage() {
           />
         </div>
 
-        {/* Tombol Aksi */}
+        {/* button */}
         <div className="flex justify-end gap-2">
           <button
             type="submit"

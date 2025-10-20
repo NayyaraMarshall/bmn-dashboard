@@ -16,7 +16,6 @@ export type Peminjaman = {
   statusPeminjaman: "Aktif" | "Selesai";
 };
 
-// data dummy awal
 export const dataPeminjaman: Peminjaman[] = [
   {
     idPeminjaman: 1,

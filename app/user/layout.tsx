@@ -6,10 +6,10 @@ import Header from "@/components/Header";
 export default function UserLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-screen bg-gray-100 font-inter">
-      {/* Sidebar */}
+      {/* sidebar */}
       <Sidebar role="user" />
 
-      {/* Konten */}
+      {/* content */}
       <div className="flex-1 flex flex-col">
         <Header
           role="user"

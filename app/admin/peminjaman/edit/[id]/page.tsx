@@ -14,31 +14,31 @@ export default function EditPeminjamanPage() {
   const [keterangan, setKeterangan] = useState("");
   const [status, setStatus] = useState<"Aktif" | "Selesai">("Aktif");
 
-  // format tanggal ke ISO yyyy-mm-dd (biar masuk ke input date)
-  const parseDateToISO = (dateStr: string | null): string => {
+  // format tanggal untuk input
+  const parseDate = (dateStr: string | null): string => {
     if (!dateStr) return "";
     const [day, month, year] = dateStr.split("-");
     return `${year}-${month}-${day}`;
   };
 
-  // ambil data peminjaman berdasarkan ID
+  // ambil data by id
   useEffect(() => {
     const found = dataPeminjaman.find(
       (item) => item.idPeminjaman === idPeminjaman
     );
     if (found) {
       setPeminjaman(found);
-      setTanggalKembali(parseDateToISO(found.tanggalKembali));
+      setTanggalKembali(parseDate(found.tanggalKembali));
       setKeterangan(found.keterangan || "");
       setStatus(found.statusPeminjaman);
     }
   }, [idPeminjaman]);
 
-  // format tanggal ke dd-mm-yyyy
-  const formatDate = (isoDate: string): string => {
-    if (!isoDate) return "";
-    const [year, month, day] = isoDate.split("-");
-    return `${day}-${month}-${year}`;
+  // format tanggal untuk display
+  const formatDate = (dateStr: string): string => {
+  if (!dateStr) return "";
+  const [year, month, day] = dateStr.split("-");
+  return `${day}-${month}-${year}`;
   };
 
   // simpan perubahan
@@ -75,7 +75,7 @@ export default function EditPeminjamanPage() {
       <h2 className="text-sm font-bold mb-4">Edit Data Peminjaman</h2>
 
       <form className="space-y-4" onSubmit={handleSubmit}>
-        {/* Nama Peminjam */}
+        {/* nama peminjam */}
         <div>
           <label className="block text-xs font-medium mb-1">Nama Peminjam</label>
           <input
@@ -97,7 +97,7 @@ export default function EditPeminjamanPage() {
           />
         </div>
 
-        {/* Nama Barang */}
+        {/* nama barang */}
         <div>
           <label className="block text-xs font-medium mb-1">Nama Barang</label>
           <input
@@ -108,7 +108,7 @@ export default function EditPeminjamanPage() {
           />
         </div>
 
-        {/* Tanggal Kembali */}
+        {/* tanggal kembali */}
         <div>
           <label className="block text-xs font-medium mb-1">Tanggal Kembali</label>
           <input
@@ -119,7 +119,7 @@ export default function EditPeminjamanPage() {
           />
         </div>
 
-        {/* Keterangan */}
+        {/* keterangan */}
         <div>
           <label className="block text-xs font-medium mb-1">Keterangan</label>
           <input
@@ -130,7 +130,7 @@ export default function EditPeminjamanPage() {
           />
         </div>
 
-        {/* Status Peminjaman */}
+        {/* status peminjaman */}
         <div>
           <label className="block text-xs font-medium mb-1">Status Peminjaman</label>
           <select
@@ -145,7 +145,7 @@ export default function EditPeminjamanPage() {
           </select>
         </div>
 
-        {/* Tombol */}
+        {/* button */}
         <div className="flex justify-end gap-2 mt-4">
           <button
             type="submit"

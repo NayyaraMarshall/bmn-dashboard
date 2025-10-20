@@ -8,7 +8,7 @@ import { ReactNode } from "react";
 import { dataBMN } from "@/data/dataBMN";
 import { dataPeminjaman } from "@/data/dataPeminjaman";
 
-function parseDMY(dateStr?: string | null): Date {
+function parseDate(dateStr?: string | null): Date {
   if (!dateStr) return new Date(0);
   const parts = dateStr.split(/[/\-\.]/).map((p) => p.trim());
   if (parts.length < 3) return new Date(0);
@@ -35,8 +35,8 @@ const kondisiData: Record<
   { name: string; value: number; color: string }[]
 > = {
   Laptop: [
-    { name: " Kondisi Baik", value: 15, color: "var(--chart-1)" }, // biru muda
-    { name: "Dalam Perbaikan", value: 5, color: "var(--chart-2)" }, // biru tua
+    { name: " Kondisi Baik", value: 15, color: "var(--chart-1)" }, 
+    { name: "Dalam Perbaikan", value: 5, color: "var(--chart-2)" },
   ],
   TV: [
     { name: "Kondisi Baik", value: 7, color: "var(--chart-1)" },
@@ -67,22 +67,22 @@ export default function Dashboard() {
   const perolehanBMN = [...dataBMN]
     .sort(
       (a, b) =>
-        parseDMY(b.tanggalPerolehan).getTime() -
-        parseDMY(a.tanggalPerolehan).getTime()
+        parseDate(b.tanggalPerolehan).getTime() -
+        parseDate(a.tanggalPerolehan).getTime()
     )
     .slice(0, 4);
 
   const peminjamanBMN = [...dataPeminjaman]
     .sort(
       (a, b) =>
-        parseDMY(b.tanggalPinjam).getTime() -
-        parseDMY(a.tanggalPinjam).getTime()
+        parseDate(b.tanggalPinjam).getTime() -
+        parseDate(a.tanggalPinjam).getTime()
     )
     .slice(0, 4);
 
   return (
     <div className="grid grid-cols-5 gap-2 p-0">
-      {/* Total BMN */}
+      {/* total BMN */}
       <SmallCard className="col-span-1 h-[140px] flex flex-col">
         <CardHeader className="p-2 pb-0">
           <CardTitle className="text-xs">Total Unit BMN</CardTitle>
@@ -92,7 +92,7 @@ export default function Dashboard() {
         </CardContent>
       </SmallCard>
 
-      {/* Radial Chart per kategori */}
+      {/* radial chart per kategori */}
       {kategoriData.map((stat, i) => {
         const chartConfig = {
           kondisiBaik: { label: "Kondisi Baik", color: "var(--chart-1)" },
@@ -165,7 +165,7 @@ export default function Dashboard() {
         );
       })}
 
-      {/* Bar Chart + Tabel */}
+      {/* bar chart + tabel */}
       <div className="col-span-5 grid grid-cols-5 gap-2 items-start">
         <SmallCard className="col-span-2 h-full">
           <CardHeader className="p-2 pb-0">
@@ -186,7 +186,7 @@ export default function Dashboard() {
         </SmallCard>
 
         <div className="col-span-3 flex flex-col gap-2">
-          {/* Perolehan BMN */}
+          {/* perolehan BMN terbaru */}
           <SmallCard>
             <CardHeader className="px-3 pt-2 pb-0">
               <CardTitle className="text-xs">
@@ -220,7 +220,7 @@ export default function Dashboard() {
             </CardContent>
           </SmallCard>
 
-          {/* Peminjaman BMN */}
+          {/* peminjaman BMN terbsru*/}
           <SmallCard>
             <CardHeader className="px-3 pt-2 pb-0">
               <CardTitle className="text-xs">

@@ -17,7 +17,7 @@ export default function EditBMNPage() {
   const [kondisiBaik, setKondisiBaik] = useState<number | "">("");
   const [dalamPerbaikan, setDalamPerbaikan] = useState<number | "">("");
 
-  // Ambil data berdasarkan ID
+  // ambil data by id
   useEffect(() => {
     const found = dataBMN.find((item) => item.idBMN === idBMN);
     if (found) {
@@ -31,7 +31,7 @@ export default function EditBMNPage() {
     }
   }, [idBMN]);
 
-  // Simpan perubahan
+  // submit
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -46,18 +46,23 @@ export default function EditBMNPage() {
         kondisiRusak: Number(dalamPerbaikan),
       };
     }
-
     alert("Perubahan berhasil disimpan!");
     router.push("/admin/bmn");
   };
 
+  if (!bmn)
+    return (
+      <div className="rounded-lg bg-white p-6 shadow text-xs text-gray-600">
+        Data tidak ditemukan...
+      </div>
+    );
 
   return (
     <div className="rounded-lg bg-white p-6 shadow">
       <h2 className="mb-4 text-sm font-bold">Edit Data BMN</h2>
 
       <form className="space-y-4" onSubmit={handleSubmit}>
-        {/* Nama Barang */}
+        {/* nama barang */}
         <div>
           <label className="mb-1 block text-xs font-medium">Nama Barang</label>
           <input
@@ -68,7 +73,7 @@ export default function EditBMNPage() {
           />
         </div>
 
-        {/* Kode IKMM (Kategori)*/}
+        {/* kode IKMM (kategori)*/}
         <div>
           <label className="mb-1 block text-xs font-medium">
             Kode IKMM (Kategori)
@@ -81,7 +86,7 @@ export default function EditBMNPage() {
           />
         </div>
 
-        {/* Jumlah */}
+        {/* jumlah */}
         <div>
           <label className="mb-1 block text-xs font-medium">Jumlah</label>
           <input
@@ -98,7 +103,7 @@ export default function EditBMNPage() {
           />
         </div>
 
-        {/* Kondisi Baik */}
+        {/* kondisi baik */}
         <div>
           <label className="mb-1 block text-xs font-medium">Kondisi Baik</label>
           <input
@@ -115,7 +120,7 @@ export default function EditBMNPage() {
           />
         </div>
 
-        {/* Dalam Perbaikan */}
+        {/* dalam perbaikan */}
         <div>
           <label className="mb-1 block text-xs font-medium">Dalam Perbaikan</label>
           <input
@@ -132,7 +137,7 @@ export default function EditBMNPage() {
           />
         </div>
 
-        {/* Tombol Aksi */}
+        {/* button */}
         <div className="flex justify-end gap-2">
           <button
             type="submit"

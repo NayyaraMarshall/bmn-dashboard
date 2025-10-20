@@ -7,11 +7,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 import { dataBMN } from "@/data/dataBMN";
 
+// state
 export default function DataBMNUserPage() {
   const [search, setSearch] = useState("");
   const [kategori, setKategori] = useState("all");
 
-  // 🔹 Urutkan data dulu berdasarkan tanggalPerolehan terbaru
+// filter + sort
   const sortedData = [...dataBMN].sort((a, b) => {
     const [dayA, monthA, yearA] = a.tanggalPerolehan.split("/");
     const [dayB, monthB, yearB] = b.tanggalPerolehan.split("/");
@@ -30,11 +31,11 @@ export default function DataBMNUserPage() {
 
   return (
     <div className="p-1 space-y-2">
-      {/* Header */}
+      {/* header */}
       <h1 className="pt-0 pb-0 text-sm font-bold">Data BMN</h1>
 
       <div className="flex flex-wrap items-center gap-1">
-        {/* Search */}
+        {/* search */}
         <Input
           placeholder="Cari barang..."
           value={search}
@@ -42,7 +43,7 @@ export default function DataBMNUserPage() {
           className="text-xs placeholder:text-xs h-[24px] w-[200px] px-2"
         />
 
-        {/* Filter */}
+        {/* filter */}
         <Select onValueChange={setKategori} defaultValue="all">
           <SelectTrigger className="cursor-pointer text-xs !h-[24px] w-[140px] px-2">
             <SelectValue placeholder="Kategori" />
@@ -56,7 +57,7 @@ export default function DataBMNUserPage() {
           </SelectContent>
         </Select>
 
-        {/* Reset Button */}
+        {/* reset */}
         <Button
           variant="outline"
           className="cursor-pointer text-xs h-[24px] px-3"
@@ -69,7 +70,7 @@ export default function DataBMNUserPage() {
         </Button>
       </div>
 
-      {/* Table */}
+      {/* tabel */}
       <div className="bg-white pb-0 rounded-lg shadow border overflow-x-auto">
         <div className="max-h-[400px] overflow-y-auto">
           <table className="w-full text-xs border-collapse">

@@ -27,7 +27,6 @@ export default function Header({ title, role }: HeaderProps) {
           width="20"
           className="object-contain"
         />
-        {/* samain ukuran & ketebalan subtitle */}
         <span className="text-xs font-bold">{subtitle}</span>
       </div>
     </header>

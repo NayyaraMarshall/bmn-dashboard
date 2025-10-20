@@ -3,23 +3,11 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import {Select,SelectContent,SelectItem,SelectTrigger,SelectValue} from "@/components/ui/select";
 import { MdDeleteOutline, MdOutlineModeEdit } from "react-icons/md";
 import { useRouter } from "next/navigation";
 
 import { dataPeminjaman as initialDataPeminjaman } from "@/data/dataPeminjaman";
-
-// Helper parse tanggal format dd-mm-yyyy
-function parseDateDMY(dateStr: string): Date {
-  const [day, month, year] = dateStr.split("-").map(Number);
-  return new Date(year, month - 1, day);
-}
 
 export default function DataPeminjamanAdminPage() {
   const [search, setSearch] = useState("");
@@ -27,22 +15,28 @@ export default function DataPeminjamanAdminPage() {
   const [peminjamanData, setPeminjamanData] = useState(initialDataPeminjaman);
   const router = useRouter();
 
-  // Filter + Sort data (pakai data dari state)
-  const filteredData = peminjamanData
-    .filter((item) => {
-      const matchSearch = item.namaPeminjam
-        .toLowerCase()
-        .includes(search.toLowerCase());
-      const matchStatus = status === "all" || item.statusPeminjaman === status;
-      return matchSearch && matchStatus;
-    })
-    .sort((a, b) => {
-      const dateA = parseDateDMY(a.tanggalPinjam);
-      const dateB = parseDateDMY(b.tanggalPinjam);
-      return dateB.getTime() - dateA.getTime(); // terbaru di atas
-    });
+  // format tanggal
+  function parseDate(dateStr: string): Date {
+    const [day, month, year] = dateStr.split("-").map(Number);
+    return new Date(year, month - 1, day);
+  }
 
-  // 🗑️ Fungsi hapus data
+  // filter + sort
+  const filteredData = peminjamanData
+  .filter((item) => {
+    const matchSearch = item.namaPeminjam
+      .toLowerCase()
+      .includes(search.toLowerCase());
+    const matchStatus = status === "all" || item.statusPeminjaman === status;
+    return matchSearch && matchStatus;
+  })
+  .sort((a, b) => {
+    const dateA = parseDate(a.tanggalPinjam);
+    const dateB = parseDate(b.tanggalPinjam);
+    return dateB.getTime() - dateA.getTime();
+  });
+
+  // fungsi delete
   const handleDelete = (id: number) => {
     const confirmDelete = confirm("Apakah kamu yakin ingin menghapus data ini?");
     if (!confirmDelete) return;
@@ -54,21 +48,21 @@ export default function DataPeminjamanAdminPage() {
     alert("Data berhasil dihapus!");
   };
 
-  // ✏️ Fungsi edit
+  // fungsi edit
   const handleEdit = (id: number) => {
     router.push(`/admin/peminjaman/edit/${id}`);
   };
 
   return (
     <div className="p-2 space-y-2">
-      {/* Header */}
+      {/* header */}
       <h1 className="pt-0 pb-0 text-xs font-bold">Data Peminjaman</h1>
 
-      {/* Search + Filter + Reset + Add */}
+      {/* search + filter + add */}
       <div className="flex items-center justify-between">
-        {/* Search, Filter, Reset */}
         <div className="flex flex-wrap items-center gap-1">
-          {/* Search */}
+
+          {/* search */}
           <Input
             placeholder="Cari peminjam..."
             value={search}
@@ -76,7 +70,7 @@ export default function DataPeminjamanAdminPage() {
             className="text-xs placeholder:text-xs h-[24px] w-[200px] px-2"
           />
 
-          {/* Filter status */}
+          {/* filter status */}
           <Select onValueChange={setStatus} defaultValue="all">
             <SelectTrigger className="cursor-pointer text-xs !h-[24px] w-[140px] px-2">
               <SelectValue placeholder="Status" />
@@ -97,7 +91,7 @@ export default function DataPeminjamanAdminPage() {
             </SelectContent>
           </Select>
 
-          {/* Reset Button */}
+          {/* reset */}
           <Button
             variant="outline"
             className="cursor-pointer text-xs h-[24px] px-3"
@@ -110,7 +104,7 @@ export default function DataPeminjamanAdminPage() {
           </Button>
         </div>
 
-        {/* Add Button */}
+        {/* tambah peminjaman */}
         <Button
           variant="default"
           className="bg-blue-500 hover:bg-blue-600 cursor-pointer text-xs h-[24px] px-3"
@@ -143,8 +137,7 @@ export default function DataPeminjamanAdminPage() {
               </tr>
             </thead>
             <tbody>
-              {filteredData.length > 0 ? (
-                filteredData.map((item, index) => (
+                {filteredData.map((item, index) => (
                   <tr key={item.idPeminjaman} className="hover:bg-gray-50">
                     <td className="border p-2">{index + 1}</td>
                     <td className="border p-2">{item.nomorPeminjaman}</td>
@@ -170,6 +163,7 @@ export default function DataPeminjamanAdminPage() {
                         >
                           <MdOutlineModeEdit className="text-lg" />
                         </button>
+                        
                         {/* tombol delete */}
                         <button
                           className="cursor-pointer rounded bg-gray-300 p-1 text-gray-500 hover:text-white hover:bg-red-600"
@@ -180,17 +174,7 @@ export default function DataPeminjamanAdminPage() {
                       </div>
                     </td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td
-                    colSpan={14}
-                    className="text-center text-gray-500 text-xs p-3"
-                  >
-                    Tidak ada data peminjaman
-                  </td>
-                </tr>
-              )}
+                ))}
             </tbody>
           </table>
         </div>

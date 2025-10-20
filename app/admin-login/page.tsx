@@ -26,7 +26,7 @@ export default function AdminLoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-blue-100">
       <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-sm">
-        {/* Logo */}
+        {/* logo */}
         <img
           src="/logopu.png"
           alt="Logo Perusahaan"
@@ -34,7 +34,7 @@ export default function AdminLoginPage() {
           className="mx-auto mb-3"
         />
 
-        {/* Header */}
+        {/* header */}
         <h1 className="text-[16px] font-bold text-center mb-4 text-gray-800 leading-snug">
           Login Admin <br />
           <span className="text-gray-500 text-[12px] font-normal">
@@ -42,7 +42,7 @@ export default function AdminLoginPage() {
           </span>
         </h1>
 
-        {/* Form */}
+        {/* form */}
         <form onSubmit={handleAdminLogin} className="space-y-3">
           <input
             type="text"

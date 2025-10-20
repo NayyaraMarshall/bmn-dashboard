@@ -21,7 +21,7 @@ export default function AddPeminjamanPage() {
   const [tujuan, setTujuan] = useState("");
   const [keterangan, setKeterangan] = useState("");
 
-  // mapping kategori -> ikmm
+  // mapping kategori - IKMM
   const kategoriToIkmm: Record<string, number> = {
     Laptop: 3100106002,
     TV: 3100103002,
@@ -29,13 +29,13 @@ export default function AddPeminjamanPage() {
     Printer: 3100104002,
   };
 
-  // format tanggal ke dd-mm-yyyy
+  // format tanggal 
   const formatDate = (isoDate: string): string => {
     const [year, month, day] = isoDate.split("-");
     return `${day}-${month}-${year}`;
   };
 
-  // validasi submit
+  // submit
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -54,7 +54,7 @@ export default function AddPeminjamanPage() {
       return;
     }
 
-    // nomor peminjaman auto increment
+    // nomor peminjaman (auto increment)
     const last = dataPeminjaman[dataPeminjaman.length - 1];
     const lastNomor = last
       ? parseInt(last.nomorPeminjaman.split("/")[0])
@@ -85,9 +85,11 @@ export default function AddPeminjamanPage() {
 
   return (
     <div className="bg-white p-6 rounded-lg shadow max-h-[calc(100vh-100px)] overflow-y-auto">
+      {/* header */}
       <h2 className="text-sm font-bold mb-4">Tambah Data Peminjaman</h2>
+      
       <form className="grid grid-cols-2 gap-4" onSubmit={handleSubmit}>
-        {/* Nama Peminjam */}
+        {/* nama peminjam */}
         <div>
           <label className="block text-xs font-medium mb-1">Nama Peminjam *</label>
           <input
@@ -99,7 +101,7 @@ export default function AddPeminjamanPage() {
           />
         </div>
 
-        {/* Nama Barang */}
+        {/* nama barang */}
         <div>
           <label className="block text-xs font-medium mb-1">Nama Barang *</label>
           <input
@@ -123,7 +125,7 @@ export default function AddPeminjamanPage() {
           />
         </div>
 
-        {/* Kategori */}
+        {/* kategori */}
         <div>
           <label className="block text-xs font-medium mb-1">Kategori *</label>
           <select
@@ -144,7 +146,7 @@ export default function AddPeminjamanPage() {
           </select>
         </div>
 
-        {/* Status Pegawai */}
+        {/* status pegawai */}
         <div>
           <label className="block text-xs font-medium mb-1">Status Pegawai *</label>
           <select
@@ -162,7 +164,7 @@ export default function AddPeminjamanPage() {
           </select>
         </div>
 
-        {/* Kode IKMM */}
+        {/* kode IKMM */}
         <div>
           <label className="block text-xs font-medium mb-1">Kode IKMM</label>
           <input
@@ -173,7 +175,7 @@ export default function AddPeminjamanPage() {
           />
         </div>
 
-        {/* Tanggal Pinjam */}
+        {/* tanggal pinjam */}
         <div>
           <label className="block text-xs font-medium mb-1">Tanggal Pinjam *</label>
           <input
@@ -185,7 +187,7 @@ export default function AddPeminjamanPage() {
           />
         </div>
 
-        {/* Tanggal Kembali (Opsional) */}
+        {/* tanggal kembali (not-req) */}
         <div>
           <label className="block text-xs font-medium mb-1">Tanggal Kembali</label>
           <input
@@ -196,7 +198,7 @@ export default function AddPeminjamanPage() {
           />
         </div>
 
-        {/* Jumlah Pinjam */}
+        {/* jumlah pinjam */}
         <div>
           <label className="block text-xs font-medium mb-1">Jumlah Pinjam *</label>
           <input
@@ -213,7 +215,7 @@ export default function AddPeminjamanPage() {
           />
         </div>
 
-        {/* Tujuan */}
+        {/* tujuan */}
         <div>
           <label className="block text-xs font-medium mb-1">Tujuan *</label>
           <input
@@ -225,7 +227,7 @@ export default function AddPeminjamanPage() {
           />
         </div>
 
-        {/* Keterangan (Opsional) */}
+        {/* keterangan (non-req) */}
         <div className="col-span-2">
           <label className="block text-xs font-medium mb-1">Keterangan</label>
           <input
@@ -236,7 +238,7 @@ export default function AddPeminjamanPage() {
           />
         </div>
 
-        {/* tombol */}
+        {/* button */}
         <div className="col-span-2 flex gap-2 justify-end mt-4">
           <button
             type="submit"
