@@ -9,10 +9,10 @@ export default function AddBMNPage() {
 
   // state
   const [namaBarang, setNamaBarang] = useState("");
-  const [kategori, setKategori] = useState("");
-  const [jumlahBarang, setJumlahBarang] = useState<number | "">("");
+  const [kategori, setKategori] = useState<BMN["kategori"] | "">("");
   const [tanggalPerolehan, setTanggalPerolehan] = useState("");
-  const [ikmm, setIkmm] = useState(""); 
+  const [ikmm, setIkmm] = useState("");
+  const [jumlahBarang, setJumlahBarang] = useState<number>(1);
 
   // mapping kategori - IKMM
   const kategoriToIkmm: Record<string, string> = {
@@ -20,42 +20,67 @@ export default function AddBMNPage() {
     TV: "3100103002",
     Monitor: "3100106002",
     Printer: "3100104002",
+    Peripheral: "3100203017",
   };
 
   // format tanggal
   const formatDate = (isoDate: string): string => {
     const [year, month, day] = isoDate.split("-");
-    return `${day}-${month}-${year}`;
+    return `${day}/${month}/${year}`;
   };
+
+const generateNUP = (
+  existingData: BMN[],
+  namaBarang: string,
+  jumlahBaru: number,
+  kategori: BMN["kategori"],
+  ikmm: string,
+  tanggalPerolehan: string
+): BMN[] => {
+  // cari data BMN yang sama berdasarkan namaBarang
+  const sameItems = existingData.filter((item) => item.namaBarang === namaBarang);
+
+  // cari NUP terakhir
+  const lastNUP = sameItems.length > 0 ? Math.max(...sameItems.map((i) => i.unit)) : 0;
+
+  // buat array baru sesuai jumlah yang ditambahkan
+  return Array.from({ length: jumlahBaru }, (_, i) => ({
+    idBMN: existingData.length + i + 1,
+    akun: 132111, // ✅ angka, bukan string
+    ikmm,
+    unit: lastNUP + i + 1,
+    namaBarang,
+    kategori,
+    tanggalPerolehan: formatDate(tanggalPerolehan),
+    kondisiBarang: "Baik",
+    dipinjam: "Tersedia", // ✅ sesuai tipe union
+  }));
+};
 
   // submit
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (
-      !namaBarang || 
-      !kategori || 
-      !jumlahBarang || 
-      !tanggalPerolehan
-    ) {
+    if (!namaBarang || !kategori || !tanggalPerolehan) {
       alert("Semua field wajib diisi!");
       return;
     }
 
-    const newBMN: BMN = {
-      idBMN: dataBMN.length + 1,
-      ikmm,
-      unit: 1,
-      namaBarang,
-      kategori,
-      jumlahBarang: Number(jumlahBarang),
-      tanggalPerolehan: formatDate(tanggalPerolehan),
-      kondisiBaik: Number(jumlahBarang),
-      kondisiRusak: 0,
-      dipinjam: 0,
-    };
+    if (jumlahBarang < 1) {
+      alert("Jumlah barang minimal 1!");
+      return;
+    }
 
-    dataBMN.push(newBMN);
+    const newItems = generateNUP(
+      dataBMN,
+      namaBarang,
+      jumlahBarang,
+      kategori,
+      ikmm,
+      tanggalPerolehan
+    );
+
+    dataBMN.push(...newItems);
     router.push("/admin/bmn");
   };
 
@@ -84,7 +109,7 @@ export default function AddBMNPage() {
             className="w-full rounded border px-3 py-2 text-xs"
             value={kategori}
             onChange={(e) => {
-              const val = e.target.value;
+              const val = e.target.value as BMN["kategori"];
               setKategori(val);
               setIkmm(kategoriToIkmm[val] || "");
             }}
@@ -95,7 +120,11 @@ export default function AddBMNPage() {
             <option value="TV">TV</option>
             <option value="Monitor">Monitor</option>
             <option value="Printer">Printer</option>
+            <option value="Peripheral">Peripheral</option>
+            <option value="Internet">Internet</option>
+            <option value="Lainnya">Lainnya</option>
           </select>
+
         </div>
 
         {/* IKMM */}
@@ -109,20 +138,16 @@ export default function AddBMNPage() {
           />
         </div>
 
-        {/* jumlah */}
+        {/* jumlah barang */}
         <div>
-          <label className="mb-1 block text-xs font-medium">Jumlah *</label>
+          <label className="mb-1 block text-xs font-medium">Jumlah Barang *</label>
           <input
             type="number"
             min={1}
             className="w-full rounded border px-3 py-2 text-xs"
-            placeholder="Masukkan jumlah"
+            placeholder="Masukkan jumlah barang"
             value={jumlahBarang}
-            onChange={(e) =>
-              setJumlahBarang(
-                e.target.value === "" ? "" : Math.max(1, Number(e.target.value))
-              )
-            }
+            onChange={(e) => setJumlahBarang(Number(e.target.value))}
             required
           />
         </div>
@@ -139,7 +164,7 @@ export default function AddBMNPage() {
           />
         </div>
 
-        {/* button */}
+        {/* tombol */}
         <div className="flex justify-end gap-2">
           <button
             type="submit"
