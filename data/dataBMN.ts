@@ -39,7 +39,7 @@ export const dataBMN: BMN[] = [
     kategori: "Laptop",
     kondisiBarang: "Baik",
     tanggalPerolehan: "26/08/2024",
-    dipinjam: "Tersedia",
+    dipinjam: "Dipinjam",
   },
   {
     idBMN: 3,
@@ -50,7 +50,7 @@ export const dataBMN: BMN[] = [
     kategori: "Laptop",
     kondisiBarang: "Baik",
     tanggalPerolehan: "26/08/2024",
-    dipinjam: "Dipinjam",
+    dipinjam: "Tersedia",
   },
   {
     idBMN: 4,
@@ -61,7 +61,7 @@ export const dataBMN: BMN[] = [
     kategori: "Printer",
     kondisiBarang: "Baik",
     tanggalPerolehan: "15/03/2023",
-    dipinjam: "Tersedia",
+    dipinjam: "Dipinjam",
   },
   {
     idBMN: 5,
@@ -72,7 +72,7 @@ export const dataBMN: BMN[] = [
     kategori: "Printer",
     kondisiBarang: "Baik",
     tanggalPerolehan: "15/03/2023",
-    dipinjam: "Dipinjam",
+    dipinjam: "Tersedia",
   },
   {
     idBMN: 6,
@@ -83,7 +83,7 @@ export const dataBMN: BMN[] = [
     kategori: "Monitor",
     kondisiBarang: "Baik",
     tanggalPerolehan: "09/11/2022",
-    dipinjam: "Tersedia",
+    dipinjam: "Dipinjam",
   },
   {
     idBMN: 7,
@@ -114,9 +114,9 @@ export const dataBMN: BMN[] = [
     unit: 1,
     namaBarang: "LG 43-inch Smart TV",
     kategori: "TV",
-    kondisiBarang: "Rusak",
+    kondisiBarang: "Baik",
     tanggalPerolehan: "20/10/2021",
-    dipinjam: "Tidak Tersedia",
+    dipinjam: "Dipinjam",
   },
   {
     idBMN: 10,
@@ -138,7 +138,7 @@ export const dataBMN: BMN[] = [
     kategori: "Peripheral",
     kondisiBarang: "Baik",
     tanggalPerolehan: "10/09/2023",
-    dipinjam: "Tersedia",
+    dipinjam: "Dipinjam",
   },
   {
     idBMN: 12,
@@ -147,9 +147,9 @@ export const dataBMN: BMN[] = [
     unit: 2,
     namaBarang: "Seagate Expansion 1TB External Hard Drive",
     kategori: "Peripheral",
-    kondisiBarang: "Baik",
+    kondisiBarang: "Rusak",
     tanggalPerolehan: "10/09/2023",
-    dipinjam: "Dipinjam",
+    dipinjam: "Tidak Tersedia",
   },
   {
     idBMN: 13,
@@ -158,9 +158,9 @@ export const dataBMN: BMN[] = [
     unit: 3,
     namaBarang: "Seagate Expansion 1TB External Hard Drive",
     kategori: "Peripheral",
-    kondisiBarang: "Dalam Perbaikan",
+    kondisiBarang: "Baik",
     tanggalPerolehan: "10/09/2023",
-    dipinjam: "Tidak Tersedia",
+    dipinjam: "Dipinjam",
   },
   {
     idBMN: 14,
@@ -171,6 +171,6 @@ export const dataBMN: BMN[] = [
     kategori: "Peripheral",
     kondisiBarang: "Baik",
     tanggalPerolehan: "10/09/2023",
-    dipinjam: "Dipinjam",
+    dipinjam: "Tersedia",
   },
 ];

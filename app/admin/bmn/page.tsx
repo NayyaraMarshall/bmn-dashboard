@@ -135,16 +135,16 @@ export default function DataBMNAdminPage() {
             <thead className="bg-blue-100 text-left sticky top-0 z-10">
               <tr>
                 <th className="border p-2">No</th>
-                <th className="border p-2 min-w-[150px]">IKMM / Kode Barang</th>
-                <th className="border p-2 min-w-[100px]">Akun</th>
-                <th className="border p-2 min-w-[80px]">NUP</th>
+                <th className="border p-2 min-w-[140px]">IKMM / Kode Barang</th>
+                <th className="border p-2">Akun</th>
                 <th className="border p-2 min-w-[150px]">Nama / Merek / Tipe</th>
-                <th className="border p-2 min-w-[100px]">Kategori</th>
+                <th className="border p-2">NUP</th>
+                <th className="border p-2">Kategori</th>
                 <th className="border p-2 min-w-[140px]">Tanggal Perolehan</th>
-                <th className="border p-2 min-w-[100px] text-center">Kondisi</th>
-                <th className="border p-2 min-w-[100px] text-center">Status</th>
+                <th className="border p-2 text-center">Kondisi</th>
+                <th className="border p-2 text-center">Status</th>
                 <th className="border p-2 min-w-[100px] text-center">Bukti Foto</th>
-                <th className="border p-2 min-w-[70px] text-center">Hapus</th>
+                <th className="border p-2 text-center">Hapus</th>
               </tr>
             </thead>
 
@@ -154,8 +154,8 @@ export default function DataBMNAdminPage() {
                   <td className="border p-2">{index + 1}</td>
                   <td className="border p-2">{item.ikmm}</td>
                   <td className="border p-2">{item.akun}</td>
-                  <td className="border p-2">{item.unit}</td>
                   <td className="border p-2">{item.namaBarang}</td>
+                  <td className="border p-2">{item.unit}</td>
                   <td className="border p-2">{item.kategori}</td>
                   <td className="border p-2">{item.tanggalPerolehan}</td>
 
@@ -167,7 +167,7 @@ export default function DataBMNAdminPage() {
                         handleKondisiChange(item.idBMN, v as "Baik" | "Rusak" | "Dalam Perbaikan")
                       }
                     >
-                      <SelectTrigger className="justify-center mx-auto cursor-pointer text-xs !h-[22px] w-[110px] px-2">
+                      <SelectTrigger className="justify-center mx-auto cursor-pointer text-xs !h-[22px] w-[95px] px-2">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -192,7 +192,7 @@ export default function DataBMNAdminPage() {
                         )
                       }
                     >
-                      <SelectTrigger className="justify-center mx-auto cursor-pointer text-xs !h-[22px] w-[110px] px-2">
+                      <SelectTrigger className="justify-center mx-auto cursor-pointer text-xs !h-[22px] w-[95px] px-2">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
