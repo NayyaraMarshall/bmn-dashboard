@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,45 +10,32 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from "@/components/ui/dialog";
-import { MdDeleteOutline, MdOutlineModeEdit } from "react-icons/md";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { MdDeleteOutline } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import imageCompression from "browser-image-compression";
 import { dataPeminjaman as initialDataPeminjaman } from "@/data/dataPeminjaman";
+import { dataLogPeminjaman } from "@/data/dataLogPeminjaman";
 
 // Format tanggal ke dd/mm/yyyy
-function formatDateToDDMMYYYY(date: string): string {
-  if (!date) return "";
-  const [day, month, year] = date.split(/[-/]/);
-  if (year && month && day && year.length === 4) return `${day}/${month}/${year}`;
-  const d = new Date(date);
-  if (isNaN(d.getTime())) return "";
-  return `${String(d.getDate()).padStart(2, "0")}/${String(
-    d.getMonth() + 1
-  ).padStart(2, "0")}/${d.getFullYear()}`;
+function formatDateToDDMMYYYY(date: Date): string {
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
 }
 
 export default function DataPeminjamanAdminPage() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [peminjamanData, setPeminjamanData] = useState(initialDataPeminjaman);
+  const [selectedPeminjaman, setSelectedPeminjaman] = useState<any | null>(null);
+  const [editKeterangan, setEditKeterangan] = useState("");
   const router = useRouter();
 
-  // Modal state (only for tanggalKembali & keterangan)
-  const [selectedId, setSelectedId] = useState<number | null>(null);
-  const [editField, setEditField] = useState<"tanggalKembali" | "keterangan" | null>(null);
-  const [newTanggal, setNewTanggal] = useState("");
-  const [newKeterangan, setNewKeterangan] = useState("");
-
-  // parse tanggal dd-mm-yyyy -> Date (used for sorting)
+  // parse tanggal dd/mm/yyyy -> Date (for sorting and 7-day log)
   function parseDate(dateStr: string): Date {
-    const [day, month, year] = dateStr.split("-").map(Number);
+    const [day, month, year] = dateStr.split(/[/-]/).map(Number);
     return new Date(year, month - 1, day);
   }
 
@@ -67,17 +54,20 @@ export default function DataPeminjamanAdminPage() {
 
   // Hapus
   const handleDelete = (id: number) => {
-    if (!confirm("Apakah kamu yakin ingin menghapus data ini?")) return;
+    const itemToDelete = peminjamanData.find((i) => i.idPeminjaman === id);
+    if (!itemToDelete) return;
+
+    if (!confirm("Apakah Anda yakin ingin menghapus data ini?")) return;
+
+    if (itemToDelete.statusPeminjaman === "Selesai") {
+      dataLogPeminjaman.push(itemToDelete);
+      alert("Data selesai berhasil dipindahkan ke log!");
+    }
+
     setPeminjamanData(peminjamanData.filter((i) => i.idPeminjaman !== id));
-    alert("Data berhasil dihapus!");
   };
 
-  // Navigasi edit page (ke halaman edit terpisah)
-  const handleEdit = (id: number) => {
-    router.push(`/admin/peminjaman/edit/${id}`);
-  };
-
-  // Upload foto (sama seperti sebelumnya)
+  // Upload foto
   const handleUploadFoto = async (e: React.ChangeEvent<HTMLInputElement>, id: number) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -96,37 +86,72 @@ export default function DataPeminjamanAdminPage() {
     }
   };
 
-  // Buka modal edit (untuk tanggalKembali atau keterangan)
-  const openEditModal = (id: number, field: "tanggalKembali" | "keterangan", currentValue: string) => {
-    setSelectedId(id);
-    setEditField(field);
-    if (field === "tanggalKembali") setNewTanggal(currentValue || "");
-    if (field === "keterangan") setNewKeterangan(currentValue || "");
-  };
+  // Ganti status
+  const handleInlineStatusChange = (
+    id: number,
+    value: "Aktif" | "Selesai" | "Terlambat"
+  ) => {
+    const currentItem = peminjamanData.find((p) => p.idPeminjaman === id);
+    if (!currentItem) return;
 
-  // Simpan perubahan dari modal
-  const handleSaveEdit = () => {
-    if (!selectedId || !editField) return;
-    setPeminjamanData(
-      peminjamanData.map((p) =>
-        p.idPeminjaman === selectedId
+    if (value === "Selesai") {
+      const confirmed = confirm("Apakah Anda yakin peminjaman ini telah selesai?");
+      if (!confirmed) return;
+    }
+
+    setPeminjamanData((prev) =>
+      prev.map((p) =>
+        p.idPeminjaman === id
           ? {
               ...p,
-              [editField]:
-                editField === "tanggalKembali" ? formatDateToDDMMYYYY(newTanggal) : newKeterangan,
+              statusPeminjaman: value,
+              tanggalSelesai:
+                value === "Selesai"
+                  ? new Date().toLocaleDateString("id-ID")
+                  : "-",
             }
           : p
       )
     );
-    setEditField(null);
-    setSelectedId(null);
-    setNewTanggal("");
-    setNewKeterangan("");
   };
 
-  // Ubah status inline dari Select pada baris
-  const handleInlineStatusChange = (id: number, value: "Aktif" | "Selesai" | "Terlambat") => {
-    setPeminjamanData((prev) => prev.map((p) => (p.idPeminjaman === id ? { ...p, statusPeminjaman: value } : p)));
+  // Pindah otomatis ke log setelah 7 hari
+  useEffect(() => {
+    const today = new Date();
+    const expired = peminjamanData.filter((item) => {
+      if (item.statusPeminjaman !== "Selesai" || !item.tanggalSelesai) return false;
+      const selesaiDate = parseDate(item.tanggalSelesai);
+      const diffDays = Math.floor(
+        (today.getTime() - selesaiDate.getTime()) / (1000 * 60 * 60 * 24)
+      );
+      return diffDays >= 7;
+    });
+
+    if (expired.length > 0) {
+      expired.forEach((item) => dataLogPeminjaman.push(item));
+      setPeminjamanData((prev) =>
+        prev.filter((item) => !expired.some((e) => e.idPeminjaman === item.idPeminjaman))
+      );
+      alert(`${expired.length} data selesai telah otomatis dipindahkan ke log.`);
+    }
+  }, [peminjamanData]);
+
+  // === Dialog Edit Keterangan ===
+  const handleOpenEdit = (item: any) => {
+    setSelectedPeminjaman(item);
+    setEditKeterangan(item.keterangan || "");
+  };
+
+  const handleSaveKeterangan = () => {
+    if (!selectedPeminjaman) return;
+    setPeminjamanData((prev) =>
+      prev.map((p) =>
+        p.idPeminjaman === selectedPeminjaman.idPeminjaman
+          ? { ...p, keterangan: editKeterangan }
+          : p
+      )
+    );
+    setSelectedPeminjaman(null);
   };
 
   return (
@@ -157,7 +182,7 @@ export default function DataPeminjamanAdminPage() {
 
           <Button
             variant="outline"
-            className="text-xs h-[24px] px-3"
+            className="cursor-pointer text-xs h-[24px] px-3"
             onClick={() => {
               setSearch("");
               setStatusFilter("all");
@@ -169,7 +194,7 @@ export default function DataPeminjamanAdminPage() {
 
         <Button
           variant="default"
-          className="bg-blue-500 hover:bg-blue-600 text-xs h-[24px] px-3"
+          className="cursor-pointer bg-blue-500 hover:bg-blue-600 text-xs h-[24px] px-3"
           onClick={() => router.push("/admin/peminjaman/add-peminjaman")}
         >
           + Tambah
@@ -193,7 +218,7 @@ export default function DataPeminjamanAdminPage() {
                 <th className="border p-2">Kategori</th>
                 <th className="border p-2">Jumlah</th>
                 <th className="border p-2 min-w-[110px]">Tanggal Pinjam</th>
-                <th className="border p-2 min-w-[130px] text-center">Tanggal Kembali</th>
+                <th className="border p-2 min-w-[130px] text-center">Tanggal Selesai</th>
                 <th className="border p-2 min-w-[120px] text-center">Keterangan</th>
                 <th className="border p-2 text-center">Status</th>
                 <th className="border p-2 min-w-[100px] text-center">Bukti Foto</th>
@@ -215,32 +240,17 @@ export default function DataPeminjamanAdminPage() {
                   <td className="border p-2 text-center">{item.jumlahPinjam}</td>
                   <td className="border p-2 text-center">{item.tanggalPinjam}</td>
 
-                  {/* Tanggal kembali: klik untuk modal; jika kosong tampil tombol tambah */}
+                  {/* Tanggal selesai */}
                   <td className="border p-2 text-center">
-                    {item.tanggalKembali ? (
-                      <span
-                        className="cursor-pointer text-blue-600 hover:underline"
-                        onClick={() => openEditModal(item.idPeminjaman, "tanggalKembali", item.tanggalKembali ?? "")}
-
-                      >
-                        {item.tanggalKembali}
-                      </span>
-                    ) : (
-                      <button
-                        onClick={() => openEditModal(item.idPeminjaman, "tanggalKembali", "")}
-                        className="bg-green-500 text-white text-[10px] py-1 px-2 rounded hover:bg-green-600"
-                      >
-                        Masukkan Tanggal
-                      </button>
-                    )}
+                    {item.tanggalSelesai ? item.tanggalSelesai : "-"}
                   </td>
 
-                  {/* Keterangan: klik untuk modal */}
+                  {/* Klik untuk edit keterangan */}
                   <td
-                    className="border p-2 cursor-pointer text-blue-600 hover:underline"
-                    onClick={() => openEditModal(item.idPeminjaman, "keterangan", item.keterangan ?? "")}
+                    className="border p-2 text-center cursor-pointer text-blue-600 hover:underline"
+                    onClick={() => handleOpenEdit(item)}
                   >
-                    {item.keterangan || "-"}
+                    {item.keterangan || <span className="text-gray-400 italic">Klik untuk tambah...</span>}
                   </td>
 
                   {/* Status */}
@@ -254,10 +264,10 @@ export default function DataPeminjamanAdminPage() {
                         )
                       }
                     >
-                      <SelectTrigger className="justify-center mx-auto cursor-pointer text-xs !h-[22px] w-[95px] px-2">
+                      <SelectTrigger className="justify-center mx-auto cursor-pointer text-xs !h-[22px] w-[100px] px-2">
                         <SelectValue placeholder="Status" />
                       </SelectTrigger>
-                      <SelectContent >
+                      <SelectContent>
                         <SelectItem value="Aktif" className="text-[10px]">Aktif</SelectItem>
                         <SelectItem value="Selesai" className="text-[10px]">Selesai</SelectItem>
                         <SelectItem value="Terlambat" className="text-[10px]">Terlambat</SelectItem>
@@ -293,14 +303,14 @@ export default function DataPeminjamanAdminPage() {
                     )}
                   </td>
 
-                  {/* hapus */}
+                  {/* Hapus */}
                   <td className="border p-2 text-center">
-                      <button
-                        className="rounded bg-gray-300 p-1 text-gray-500 hover:text-white hover:bg-red-600"
-                        onClick={() => handleDelete(item.idPeminjaman)}
-                      >
-                        <MdDeleteOutline className="text-lg" />
-                      </button>
+                    <button
+                      className="cursor-pointer rounded bg-gray-300 p-1 text-gray-500 hover:text-white hover:bg-red-600"
+                      onClick={() => handleDelete(item.idPeminjaman)}
+                    >
+                      <MdDeleteOutline className="text-lg" />
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -309,41 +319,24 @@ export default function DataPeminjamanAdminPage() {
         </div>
       </div>
 
-      {/* Dialog untuk edit tanggal n keterangan */}
-      <Dialog open={!!editField} onOpenChange={() => setEditField(null)}>
-        <DialogContent className="max-w-sm text-xs">
+      {/* Dialog Edit Keterangan */}
+      <Dialog open={!!selectedPeminjaman} onOpenChange={() => setSelectedPeminjaman(null)}>
+        <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-sm font-semibold">
-              Edit {editField === "tanggalKembali" ? "Tanggal Kembali" : "Keterangan"}
-            </DialogTitle>
+            <DialogTitle className="text-sm">Edit Keterangan</DialogTitle>
           </DialogHeader>
-
-          {editField === "tanggalKembali" && (
+          <div className="py-3">
             <Input
-              type="date"
-              value={newTanggal}
-              onChange={(e) => setNewTanggal(e.target.value)}
-              className="text-xs h-[24px] px-2 placeholder:text-xs"
+              value={editKeterangan}
+              onChange={(e) => setEditKeterangan(e.target.value)}
+              placeholder="Masukkan keterangan peminjaman..."
             />
-          )}
-
-          {editField === "keterangan" && (
-            <Input
-              type="text"
-              value={newKeterangan}
-              onChange={(e) => setNewKeterangan(e.target.value)}
-              placeholder="Masukkan keterangan baru..."
-              className="text-xs h-[24px] px-2 placeholder:text-xs"
-            />
-          )}
-
-          <DialogFooter className="text-xs">
-            <Button variant="outline" onClick={() => setEditField(null)} className="text-xs h-[24px] px-3">
+          </div>
+          <DialogFooter >
+            <Button className="cursor-pointer text-xs h-[26px] px-3" variant="outline" onClick={() => setSelectedPeminjaman(null)}>
               Batal
             </Button>
-            <Button onClick={handleSaveEdit} className="text-xs h-[24px] px-3">
-              Simpan
-            </Button>
+            <Button className="cursor-pointer text-xs h-[26px] px-3" onClick={handleSaveKeterangan}>Simpan</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

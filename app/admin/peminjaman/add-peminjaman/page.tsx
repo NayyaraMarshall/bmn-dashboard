@@ -12,12 +12,14 @@ export default function AddPeminjamanPage() {
   const [statusPegawai, setStatusPegawai] =
     useState<"PPPK" | "KI" | "PNS" | "Magang">("Magang");
   const [nip, setNip] = useState("");
-  const [kategori, setKategori] = useState("");
+  const [kategori, setKategori] = useState<
+    "Laptop" | "Monitor" | "Printer" | "TV" | "Peripheral" | "Internet" | "Lainnya" | ""
+  >("");
   const [ikmm, setIkmm] = useState<number | "">("");
   const [namaBarang, setNamaBarang] = useState("");
+  const [unit, setUnit] = useState<number | "">("");
   const [jumlahPinjam, setJumlahPinjam] = useState<number | "">("");
   const [tanggalPinjam, setTanggalPinjam] = useState("");
-  const [tanggalKembali, setTanggalKembali] = useState("");
   const [tujuan, setTujuan] = useState("");
   const [keterangan, setKeterangan] = useState("");
 
@@ -27,12 +29,13 @@ export default function AddPeminjamanPage() {
     TV: 3100103002,
     Monitor: 3100106002,
     Printer: 3100104002,
+    Peripheral: 3100105002,
   };
 
-  // format tanggal 
+  // format tanggal
   const formatDate = (isoDate: string): string => {
     const [year, month, day] = isoDate.split("-");
-    return `${day}-${month}-${year}`;
+    return `${day}/${month}/${year}`;
   };
 
   // submit
@@ -46,11 +49,12 @@ export default function AddPeminjamanPage() {
       !kategori ||
       !ikmm ||
       !namaBarang ||
+      !unit ||
       !jumlahPinjam ||
       !tanggalPinjam ||
       !tujuan
     ) {
-      alert("Semua field wajib diisi (kecuali tanggal kembali & keterangan)");
+      alert("Semua field wajib diisi (kecuali keterangan)");
       return;
     }
 
@@ -70,13 +74,14 @@ export default function AddPeminjamanPage() {
       nip,
       ikmm: Number(ikmm),
       namaBarang,
-      kategori,
+      kategori: kategori as Peminjaman["kategori"],
       jumlahPinjam: Number(jumlahPinjam),
       tanggalPinjam: formatDate(tanggalPinjam),
-      tanggalKembali: tanggalKembali ? formatDate(tanggalKembali) : null,
+      tanggalSelesai: null, // default null
       tujuan,
-      keterangan: keterangan || "", 
+      keterangan: keterangan || null,
       statusPeminjaman: "Aktif",
+      unit: Number(unit),
     };
 
     dataPeminjaman.push(newPeminjaman);
@@ -85,11 +90,10 @@ export default function AddPeminjamanPage() {
 
   return (
     <div className="bg-white p-6 rounded-lg shadow max-h-[calc(100vh-100px)] overflow-y-auto">
-      {/* header */}
       <h2 className="text-sm font-bold mb-4">Tambah Data Peminjaman</h2>
-      
+
       <form className="grid grid-cols-2 gap-4" onSubmit={handleSubmit}>
-        {/* nama peminjam */}
+        {/* Nama Peminjam */}
         <div>
           <label className="block text-xs font-medium mb-1">Nama Peminjam *</label>
           <input
@@ -97,11 +101,10 @@ export default function AddPeminjamanPage() {
             className="text-xs w-full border px-3 py-2 rounded"
             value={namaPeminjam}
             onChange={(e) => setNamaPeminjam(e.target.value)}
-            required
           />
         </div>
 
-        {/* nama barang */}
+        {/* Nama Barang */}
         <div>
           <label className="block text-xs font-medium mb-1">Nama Barang *</label>
           <input
@@ -109,7 +112,6 @@ export default function AddPeminjamanPage() {
             className="text-xs w-full border px-3 py-2 rounded"
             value={namaBarang}
             onChange={(e) => setNamaBarang(e.target.value)}
-            required
           />
         </div>
 
@@ -121,32 +123,33 @@ export default function AddPeminjamanPage() {
             className="text-xs w-full border px-3 py-2 rounded"
             value={nip}
             onChange={(e) => setNip(e.target.value)}
-            required
           />
         </div>
 
-        {/* kategori */}
+        {/* Kategori */}
         <div>
           <label className="block text-xs font-medium mb-1">Kategori *</label>
           <select
             className="text-xs w-full border px-3 py-2 rounded"
             value={kategori}
             onChange={(e) => {
-              const val = e.target.value;
+              const val = e.target.value as Peminjaman["kategori"] | "";
               setKategori(val);
               setIkmm(kategoriToIkmm[val] || "");
             }}
-            required
           >
             <option value="">Pilih kategori</option>
             <option value="Laptop">Laptop</option>
             <option value="TV">TV</option>
             <option value="Monitor">Monitor</option>
             <option value="Printer">Printer</option>
+            <option value="Peripheral">Peripheral</option>
+            <option value="Internet">Internet</option>
+            <option value="Lainnya">Lainnya</option>
           </select>
         </div>
 
-        {/* status pegawai */}
+        {/* Status Pegawai */}
         <div>
           <label className="block text-xs font-medium mb-1">Status Pegawai *</label>
           <select
@@ -155,7 +158,6 @@ export default function AddPeminjamanPage() {
             onChange={(e) =>
               setStatusPegawai(e.target.value as "PPPK" | "KI" | "PNS" | "Magang")
             }
-            required
           >
             <option value="PPPK">PPPK</option>
             <option value="KI">KI</option>
@@ -164,7 +166,7 @@ export default function AddPeminjamanPage() {
           </select>
         </div>
 
-        {/* kode IKMM */}
+        {/* Kode IKMM */}
         <div>
           <label className="block text-xs font-medium mb-1">Kode IKMM</label>
           <input
@@ -174,31 +176,8 @@ export default function AddPeminjamanPage() {
             readOnly
           />
         </div>
-
-        {/* tanggal pinjam */}
-        <div>
-          <label className="block text-xs font-medium mb-1">Tanggal Pinjam *</label>
-          <input
-            type="date"
-            className="text-xs w-full border px-3 py-2 rounded"
-            value={tanggalPinjam}
-            onChange={(e) => setTanggalPinjam(e.target.value)}
-            required
-          />
-        </div>
-
-        {/* tanggal kembali (not-req) */}
-        <div>
-          <label className="block text-xs font-medium mb-1">Tanggal Kembali</label>
-          <input
-            type="date"
-            className="text-xs w-full border px-3 py-2 rounded"
-            value={tanggalKembali}
-            onChange={(e) => setTanggalKembali(e.target.value)}
-          />
-        </div>
-
-        {/* jumlah pinjam */}
+        
+        {/* Jumlah Pinjam */}
         <div>
           <label className="block text-xs font-medium mb-1">Jumlah Pinjam *</label>
           <input
@@ -211,11 +190,37 @@ export default function AddPeminjamanPage() {
                 e.target.value === "" ? "" : Math.max(1, Number(e.target.value))
               )
             }
-            required
+          />
+        </div>
+        
+        {/* Unit */}
+        <div>
+          <label className="block text-xs font-medium mb-1">Unit *</label>
+          <input
+            type="number"
+            min={1}
+            className="text-xs w-full border px-3 py-2 rounded"
+            value={unit}
+            onChange={(e) =>
+              setUnit(e.target.value === "" ? "" : Math.max(1, Number(e.target.value)))
+            }
           />
         </div>
 
-        {/* tujuan */}
+        
+
+        {/* Tanggal Pinjam */}
+        <div>
+          <label className="block text-xs font-medium mb-1">Tanggal Pinjam *</label>
+          <input
+            type="date"
+            className="text-xs w-full border px-3 py-2 rounded"
+            value={tanggalPinjam}
+            onChange={(e) => setTanggalPinjam(e.target.value)}
+          />
+        </div>
+
+        {/* Tujuan */}
         <div>
           <label className="block text-xs font-medium mb-1">Tujuan *</label>
           <input
@@ -223,11 +228,10 @@ export default function AddPeminjamanPage() {
             className="text-xs w-full border px-3 py-2 rounded"
             value={tujuan}
             onChange={(e) => setTujuan(e.target.value)}
-            required
           />
         </div>
 
-        {/* keterangan (non-req) */}
+        {/* Keterangan */}
         <div className="col-span-2">
           <label className="block text-xs font-medium mb-1">Keterangan</label>
           <input
@@ -238,7 +242,7 @@ export default function AddPeminjamanPage() {
           />
         </div>
 
-        {/* button */}
+        {/* Buttons */}
         <div className="col-span-2 flex gap-2 justify-end mt-4">
           <button
             type="submit"

@@ -1,4 +1,3 @@
-
 export type Peminjaman = {
   idPeminjaman: number;
   nomorPeminjaman: string;
@@ -18,7 +17,7 @@ export type Peminjaman = {
     | "Lainnya";
   jumlahPinjam: number;
   tanggalPinjam: string;
-  tanggalKembali?: string | null;
+  tanggalSelesai: string | null; // 
   tujuan: string;
   keterangan: string | null;
   statusPeminjaman: "Aktif" | "Selesai" | "Terlambat";
@@ -38,7 +37,7 @@ export const dataPeminjaman: Peminjaman[] = [
     kategori: "Laptop",
     jumlahPinjam: 1,
     tanggalPinjam: "19/08/2025",
-    tanggalKembali: null,
+    tanggalSelesai: null,
     tujuan: "Operasional Kantor",
     keterangan: "Laptop + Charger",
     statusPeminjaman: "Aktif",
@@ -55,7 +54,7 @@ export const dataPeminjaman: Peminjaman[] = [
     kategori: "Laptop",
     jumlahPinjam: 1,
     tanggalPinjam: "21/08/2025",
-    tanggalKembali: null,
+    tanggalSelesai: null,
     tujuan: "Presentasi Proyek",
     keterangan: "Disertakan remote control",
     statusPeminjaman: "Aktif",
@@ -72,10 +71,10 @@ export const dataPeminjaman: Peminjaman[] = [
     kategori: "Laptop",
     jumlahPinjam: 1,
     tanggalPinjam: "10/07/2025",
-    tanggalKembali: "12/07/2025",
+    tanggalSelesai: null,
     tujuan: "Cetak Dokumen",
     keterangan: "Dengan tinta hitam & warna",
-    statusPeminjaman: "Selesai",
+    statusPeminjaman: "Aktif",
   },
   {
     idPeminjaman: 4,
@@ -89,7 +88,7 @@ export const dataPeminjaman: Peminjaman[] = [
     kategori: "Peripheral",
     jumlahPinjam: 2,
     tanggalPinjam: "05/08/2025",
-    tanggalKembali: null,
+    tanggalSelesai: null,
     tujuan: "Training Karyawan",
     keterangan: "Termasuk kabel HDMI",
     statusPeminjaman: "Aktif",
@@ -106,10 +105,10 @@ export const dataPeminjaman: Peminjaman[] = [
     kategori: "Peripheral",
     jumlahPinjam: 1,
     tanggalPinjam: "15/07/2025",
-    tanggalKembali: "20/07/2025",
+    tanggalSelesai: null,
     tujuan: "Pembuatan Laporan",
     keterangan: "Laptop + tas",
-    statusPeminjaman: "Selesai",
+    statusPeminjaman: "Aktif",
   },
   {
     idPeminjaman: 6,
@@ -123,7 +122,7 @@ export const dataPeminjaman: Peminjaman[] = [
     kategori: "Peripheral",
     jumlahPinjam: 1,
     tanggalPinjam: "01/08/2025",
-    tanggalKembali: null,
+    tanggalSelesai: null,
     tujuan: "Operasional Proyek",
     keterangan: "Laptop + charger",
     statusPeminjaman: "Aktif",
@@ -140,10 +139,10 @@ export const dataPeminjaman: Peminjaman[] = [
     kategori: "Peripheral",
     jumlahPinjam: 1,
     tanggalPinjam: "28/06/2025",
-    tanggalKembali: "02/07/2025",
+    tanggalSelesai: null,
     tujuan: "Testing Software",
     keterangan: "Unit + tas",
-    statusPeminjaman: "Selesai",
+    statusPeminjaman: "Aktif",
   },
   {
     idPeminjaman: 8,
@@ -157,7 +156,7 @@ export const dataPeminjaman: Peminjaman[] = [
     kategori: "Printer",
     jumlahPinjam: 1,
     tanggalPinjam: "02/09/2025",
-    tanggalKembali: null,
+    tanggalSelesai: null,
     tujuan: "Cetak Arsip",
     keterangan: "Printer dengan kabel power",
     statusPeminjaman: "Aktif",
@@ -174,10 +173,10 @@ export const dataPeminjaman: Peminjaman[] = [
     kategori: "Printer",
     jumlahPinjam: 1,
     tanggalPinjam: "30/07/2025",
-    tanggalKembali: "01/08/2025",
+    tanggalSelesai: null,
     tujuan: "Demo Produk",
     keterangan: "Stand & kabel disertakan",
-    statusPeminjaman: "Selesai",
+    statusPeminjaman: "Aktif",
   },
   {
     idPeminjaman: 10,
@@ -191,7 +190,7 @@ export const dataPeminjaman: Peminjaman[] = [
     kategori: "Monitor",
     jumlahPinjam: 1,
     tanggalPinjam: "25/08/2025",
-    tanggalKembali: null,
+    tanggalSelesai: null,
     tujuan: "Rapat Internal",
     keterangan: "Dengan remote",
     statusPeminjaman: "Aktif",
@@ -208,10 +207,10 @@ export const dataPeminjaman: Peminjaman[] = [
     kategori: "Monitor",
     jumlahPinjam: 1,
     tanggalPinjam: "10/08/2025",
-    tanggalKembali: "12/08/2025",
+    tanggalSelesai: null,
     tujuan: "Testing Aplikasi",
     keterangan: "Laptop + charger",
-    statusPeminjaman: "Selesai",
+    statusPeminjaman: "Aktif",
   },
   {
     idPeminjaman: 12,
@@ -225,7 +224,7 @@ export const dataPeminjaman: Peminjaman[] = [
     kategori: "Monitor",
     jumlahPinjam: 1,
     tanggalPinjam: "12/09/2025",
-    tanggalKembali: null,
+    tanggalSelesai: null,
     tujuan: "Operasional Divisi",
     keterangan: "Unit + charger",
     statusPeminjaman: "Aktif",
@@ -242,7 +241,7 @@ export const dataPeminjaman: Peminjaman[] = [
     kategori: "TV",
     jumlahPinjam: 2,
     tanggalPinjam: "18/09/2025",
-    tanggalKembali: null,
+    tanggalSelesai: null,
     tujuan: "Kegiatan Lapangan",
     keterangan: "Laptop + tas",
     statusPeminjaman: "Aktif",
