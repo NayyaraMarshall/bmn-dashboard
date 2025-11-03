@@ -55,3 +55,14 @@ enum StatusPeminjaman {
   Selesai
   Terlambat
 }
+
+model UsulanHapus {
+  idUsulan     Int      @id @default(autoincrement())
+  namaBarang   String  
+  idBMN        Int
+  alasan       String?
+  tanggalUsulan DateTime @default(now())
+  status       String   @default("Menunggu Persetujuan") // Menunggu, Disetujui, Ditolak
+  fotoBukti    String?
+  bmn          BMN      @relation(fields: [idBMN], references: [idBMN], onDelete: Cascade)
+}

@@ -60,6 +60,14 @@ export default function DataBMNAdminPage() {
     setBmnData(bmnData.map((b) => (b.idBMN === id ? { ...b, kondisiBarang: kondisi } : b)));
   };
 
+  const handleAjukanPenghapusan = (id: number) => {
+    const item = bmnData.find((b) => b.idBMN === id);
+    if (!item) return;
+    if (confirm(`Ajukan penghapusan untuk ${item.namaBarang} (NUP: ${item.unit})?`)) {
+      alert(`Usulan penghapusan untuk "${item.namaBarang}" berhasil diajukan!`);
+    }
+  };
+
   return (
     <div className="p-2 space-y-2">
       <h1 className="pt-0 pb-0 text-xs font-bold">Data BMN</h1>
@@ -71,10 +79,10 @@ export default function DataBMNAdminPage() {
             placeholder="Cari barang..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="text-[10px] placeholder:text-xs h-[24px] w-[200px] px-2"
+            className="text-[10px] placeholder:text-xs h-[24px] w-[200px] px-2 !bg-gray-50"
           />
           <Select onValueChange={setStatus} defaultValue="all">
-            <SelectTrigger className="cursor-pointer text-xs !h-[24px] w-[130px] px-2">
+            <SelectTrigger className="cursor-pointer text-xs !h-[24px] w-[130px] px-2 !bg-gray-50">
               <SelectValue placeholder="Status" />
             </SelectTrigger>
             <SelectContent className="text-xs">
@@ -85,7 +93,7 @@ export default function DataBMNAdminPage() {
             </SelectContent>
           </Select>
           <Select onValueChange={setKondisi} defaultValue="all">
-            <SelectTrigger className="cursor-pointer text-xs !h-[24px] w-[130px] px-2">
+            <SelectTrigger className="cursor-pointer text-xs !h-[24px] w-[130px] px-2 !bg-gray-50">
               <SelectValue placeholder="Kondisi" />
             </SelectTrigger>
             <SelectContent className="text-xs">
@@ -96,7 +104,7 @@ export default function DataBMNAdminPage() {
             </SelectContent>
           </Select>
           <Select onValueChange={setKategori} defaultValue="all">
-            <SelectTrigger className="cursor-pointer text-xs !h-[24px] w-[140px] px-2">
+            <SelectTrigger className="cursor-pointer text-xs !h-[24px] w-[140px] px-2 !bg-gray-50">
               <SelectValue placeholder="Kategori" />
             </SelectTrigger>
             <SelectContent className="text-xs">
@@ -107,17 +115,14 @@ export default function DataBMNAdminPage() {
               ))}
             </SelectContent>
           </Select>
-          <Button
+           <Button
             variant="outline"
-            className="cursor-pointer text-xs h-[24px] px-3"
+            className="cursor-pointer text-xs h-[24px] px-3 !bg-gray-50"
             onClick={() => {
               setSearch("");
-              setStatus("all");
               setKategori("all");
-              setKondisi("all");
             }}
-          >
-            Reset
+          >Reset
           </Button>
         </div>
         <Button
@@ -144,6 +149,7 @@ export default function DataBMNAdminPage() {
                 <th className="border p-2 text-center">Kondisi</th>
                 <th className="border p-2 text-center">Status</th>
                 <th className="border p-2 min-w-[100px] text-center">Bukti Foto</th>
+                <th className="border p-2 text-center min-w-[170px]">Usulkan Penghapusan</th>
                 <th className="border p-2 text-center">Hapus</th>
               </tr>
             </thead>
@@ -230,6 +236,15 @@ export default function DataBMNAdminPage() {
                       </>
                     )}
                   </td>
+                  
+                  <td className="border p-2 text-center">
+                    <button
+                      onClick={() => handleAjukanPenghapusan(item.idBMN)}
+                      className="cursor-pointer bg-yellow-500 text-white text-[10px] py-1 px-2 rounded hover:bg-yellow-600"
+                    >
+                      Usulkan 
+                    </button>
+                  </td>
 
                   {/* hapus */}
                   <td className="border p-2 text-center">
@@ -240,6 +255,8 @@ export default function DataBMNAdminPage() {
                       <MdDeleteOutline className="text-lg" />
                     </button>
                   </td>
+
+                  
                 </tr>
               ))}
             </tbody>

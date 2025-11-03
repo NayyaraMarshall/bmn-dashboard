@@ -207,8 +207,6 @@ export default function AddPeminjamanPage() {
           />
         </div>
 
-        
-
         {/* Tanggal Pinjam */}
         <div>
           <label className="block text-xs font-medium mb-1">Tanggal Pinjam *</label>

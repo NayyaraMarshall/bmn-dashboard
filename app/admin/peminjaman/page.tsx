@@ -28,6 +28,7 @@ function formatDateToDDMMYYYY(date: Date): string {
 export default function DataPeminjamanAdminPage() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [kategori, setKategori] = useState("all");
   const [peminjamanData, setPeminjamanData] = useState(initialDataPeminjaman);
   const [selectedPeminjaman, setSelectedPeminjaman] = useState<any | null>(null);
   const [editKeterangan, setEditKeterangan] = useState("");
@@ -41,16 +42,17 @@ export default function DataPeminjamanAdminPage() {
 
   // Filter + sort
   const filteredData = peminjamanData
-    .filter((item) => {
-      const matchSearch = item.namaPeminjam.toLowerCase().includes(search.toLowerCase());
-      const matchStatus = statusFilter === "all" || item.statusPeminjaman === statusFilter;
-      return matchSearch && matchStatus;
-    })
-    .sort((a, b) => {
-      const dateA = parseDate(a.tanggalPinjam);
-      const dateB = parseDate(b.tanggalPinjam);
-      return dateB.getTime() - dateA.getTime();
-    });
+  .filter((item) => {
+    const matchSearch = item.namaPeminjam.toLowerCase().includes(search.toLowerCase());
+    const matchStatus = statusFilter === "all" || item.statusPeminjaman === statusFilter;
+    const matchKategori = kategori === "all" || item.kategori === kategori;
+    return matchSearch && matchStatus && matchKategori;
+  })
+  .sort((a, b) => {
+    const dateA = parseDate(a.tanggalPinjam);
+    const dateB = parseDate(b.tanggalPinjam);
+    return dateB.getTime() - dateA.getTime();
+  });
 
   // Hapus
   const handleDelete = (id: number) => {
@@ -165,27 +167,40 @@ export default function DataPeminjamanAdminPage() {
             placeholder="Cari peminjam..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="text-xs placeholder:text-xs h-[24px] w-[200px] px-2"
+            className="text-xs placeholder:text-xs h-[24px] w-[200px] px-2 !bg-gray-50"
           />
 
           <Select onValueChange={setStatusFilter} defaultValue="all">
-            <SelectTrigger className="cursor-pointer text-xs !h-[24px] w-[140px] px-2">
+            <SelectTrigger className="cursor-pointer text-xs !h-[24px] w-[140px] px-2 !bg-gray-50">
               <SelectValue placeholder="Status" />
             </SelectTrigger>
             <SelectContent className="text-xs">
-              <SelectItem value="all">Semua Status</SelectItem>
-              <SelectItem value="Aktif">Aktif</SelectItem>
-              <SelectItem value="Selesai">Selesai</SelectItem>
-              <SelectItem value="Terlambat">Terlambat</SelectItem>
+              <SelectItem value="all" className="text-[10px]">Semua Status</SelectItem>
+              <SelectItem value="Aktif" className="text-[10px]">Aktif</SelectItem>
+              <SelectItem value="Selesai" className="text-[10px]">Selesai</SelectItem>
+              <SelectItem value="Terlambat" className="text-[10px]">Terlambat</SelectItem>
             </SelectContent>
           </Select>
-
+          
+          <Select onValueChange={setKategori} defaultValue="all">
+            <SelectTrigger className="cursor-pointer text-xs !h-[24px] w-[140px] px-2 !bg-gray-50">
+              <SelectValue placeholder="Kategori" />
+            </SelectTrigger>
+            <SelectContent className="text-xs">
+              {["all", "Laptop", "Monitor", "Printer", "TV", "Peripheral", "Lainnya"].map((k) => (
+                <SelectItem key={k} value={k} className="text-[10px]">
+                  {k === "all" ? "Semua Kategori" : k}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
           <Button
             variant="outline"
-            className="cursor-pointer text-xs h-[24px] px-3"
+            className="cursor-pointer text-xs h-[24px] px-3 !bg-gray-50"
             onClick={() => {
               setSearch("");
               setStatusFilter("all");
+              setKategori("all");
             }}
           >
             Reset
